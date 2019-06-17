@@ -3,12 +3,17 @@
 
 class Session
 {
+    private function __construct()
+    {
+        //can not be instantiated
+    }
+
     public static function exists($session){
         return (isset($_SESSION[$session])) ? true : false;
     }
 
     public static function get($session){
-        return $_SESSION[$session];
+        return self::exists($session) ? $_SESSION[$session] : self::set($session, NULL);
     }
 
     public static function set($session, $value){

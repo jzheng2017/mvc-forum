@@ -22,7 +22,8 @@ class View
             include(ROOT . DS . 'app' . DS . 'views' . DS . $viewString . '.php');
             include(ROOT . DS . 'app' . DS . 'views' . DS . 'layouts' . DS . $this->layout . '.php');
         } else {
-            die('The view \"' . $viewName . '\" does not exist.');
+            //die('The view \"' . $viewName . '\" does not exist.');
+            Router::redirect('error');
         }
     }
 

@@ -15,7 +15,6 @@ class Model
     {
         $this->db = Database::getInstance();
         $this->table = $table;
-        $this->setTableColumns();
         $this->model = str_replace(' ', '', ucwords(str_replace('_', ' ', $this->table)));
     }
 
@@ -25,7 +24,6 @@ class Model
 
         foreach ($columns as $column) {
             $this->columnNames[] = $column->Field;
-            $this->{$column->Field} = null;
         }
     }
 
@@ -45,10 +43,12 @@ class Model
     {
         $results = [];
         $resultsQuery = $this->db->find($this->table, $params);
-        foreach ($resultsQuery as $result) {
-            $obj = new $this->model($this->table);
-            $obj->populate($result);
-            $results[] = $obj;
+        if ($resultsQuery) {
+            foreach ($resultsQuery as $result) {
+                $obj = new $this->model($this->table);
+                $obj->populate($result);
+                $results[] = $obj;
+            }
         }
         return $results;
     }
@@ -66,21 +66,25 @@ class Model
 
     public function findById($id)
     {
-        return $this->findFirst(['condition' => 'id = ?', 'bind' => [$id]]);
+        return $this->findFirst(['conditions' => 'id = ?', 'bind' => [$id]]);
     }
 
     public function save()
     {
+        $this->setTableColumns();
         $fields = [];
 
         foreach ($this->columnNames as $column) {
-            $fields[$column] = $this->column;
-        }
 
+            if (isset($this->$column)) {
+                $fields[$column] = $this->$column;
+            }
+        }
         //cdetermine whether to update or insert
         if (property_exists($this, 'id') && $this->id != '') {
             return $this->update($this->id, $fields);
         } else {
+
             return $this->insert($fields);
         }
     }
@@ -88,9 +92,11 @@ class Model
     public function insert($fields)
     {
         if (empty($fields)) {
+
             return false;
         }
-        return $this->db->insert($this->table, $this->fields);
+
+        return $this->db->insert($this->table, $fields);
     }
 
     public function update($id, $fields)
@@ -124,7 +130,7 @@ class Model
         $data = new stdClass();
 
         foreach ($this->columnNames as $column) {
-            $data->column = $this->column;
+            $data->$column = $this->$column;
         }
         return $data;
     }

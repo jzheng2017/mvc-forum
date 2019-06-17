@@ -36,14 +36,14 @@ class Validate
                             break;
                         case 'matches':
                             if ($value != $source[$rule_value]) {
-                                $matchDisplay = $item[$rule_value]['display'];
+                                $matchDisplay = $items[$rule_value]['display'];
                                 $this->addError(["{$matchDisplay} and {$display} must match.", $item]);
                             }
                             break;
                         case 'unique':
                             $check = $this->db->query("SELECT {$item} FROM {$rule_value} WHERE {$item} = ?", [$value]);
                             if ($check->count()) {
-                                $this->addError(["{$display} already exists. Please choose another {$display}", $item]);
+                                $this->addError(["{$display} already exists. Please choose another ". strtolower($display), $item]);
                             }
                             break;
                         case 'unique_update':
@@ -63,6 +63,11 @@ class Validate
                         case 'valid_email':
                             if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
                                 $this->addError(["{$display} must be a valid email address", $item]);
+                            }
+                            break;
+                        case 'has_uppercase':
+                            if (!preg_match('/[A-Z]/', $value)) {
+                                $this->addError(["{$display} must have atleast 1 uppercase character.", $item]);
                             }
                             break;
                     }

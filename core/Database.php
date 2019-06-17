@@ -41,6 +41,7 @@ class Database
                 }
             }
         }
+
         if ($this->query->execute()) {
 
             $this->result = $this->query->fetchAll(PDO::FETCH_OBJ);
@@ -77,7 +78,6 @@ class Database
 
             $sql = "UPDATE {$table} SET {$keys} WHERE id = {$id}";
         }
-
 
         if (!$this->query($sql, array_values($fields))->error()) {
             return true;
@@ -150,16 +150,14 @@ class Database
 
         //order
         if (array_key_exists('order', $params)) {
-            $order = 'ORDER BY ' . $params['order'];
+            $order = 'ORDER BY ' . $params['order'][0] . ' ' . $params['order'][1];
         }
 
         //limit
         if (array_key_exists('limit', $params)) {
             $limit = 'LIMIT ' . $params['limit'];
         }
-
         $sql = "SELECT * FROM {$table} {$conditionString} {$order} {$limit}";
-
         if ($this->query($sql, $bind)) {
             if (!count($this->result)) {
 
@@ -185,7 +183,6 @@ class Database
 
     public function findFirst($table, $params = [])
     {
-
         if ($this->read($table, $params)) {
 
             return $this->first();

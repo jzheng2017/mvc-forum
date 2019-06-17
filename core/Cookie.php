@@ -4,17 +4,23 @@
 class Cookie
 {
 
+    private function __construct()
+    {
+        //can not be instantiated
+    }
+
     public static function set($cookie, $value, $expiry)
     {
-        if (setcookie($cookie, $value, time() + $expiry, '/')) {
+        if (setcookie($cookie, $value, (int)(time() + $expiry), '/')) {
             return true;
+
         }
         return false;
     }
 
     public static function delete($cookie)
     {
-        self::set($cookie, '', time() - 1);
+        self::set($cookie, '', -1);
     }
 
     public static function get($cookie)

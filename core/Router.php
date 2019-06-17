@@ -7,6 +7,7 @@ class Router
     {
         //controller
         $controller = (isset($url[0]) && $url[0] != '') ? ucwords($url[0]) : DEFAULT_CONTROLLER;
+        $controller .= "Controller";
         $controller_name = $controller;
         array_shift($url);
 
@@ -17,14 +18,19 @@ class Router
 
         //params
         $queryParams = $url;
+        if (class_exists($controller)) {
+            $dispatch = new $controller($controller_name, $action);
 
-        $dispatch = new $controller($controller_name, $action);
-
-        if (method_exists($controller, $action)) {
-            call_user_func_array([$dispatch, $action], $queryParams);
+            if (method_exists($controller, $action)) {
+                call_user_func_array([$dispatch, $action], $queryParams);
+            } else {
+                self::redirect('error');
+                // die('That method does not exist in the controller \"' . $controller_name . '\"');
+            }
         } else {
-            die('That method does not exist in the controller \"' . $controller_name . '\"');
+            self::redirect('error');
         }
+
     }
 
     public static function redirect($location)
@@ -32,12 +38,12 @@ class Router
         if (!headers_sent()) {
             header('Location: ' . PROOT . $location);
             exit();
-        }else{
+        } else {
             echo '<script type="text/javascript">';
-            echo 'window.location.href="'. PROOT . $location.'"';
+            echo 'window.location.href="' . PROOT . $location . '"';
             echo '</script>';
             echo '<noscript>';
-            echo '<meta http-equiv="refresh" content="0;url='.$location.'"/>';
+            echo '<meta http-equiv="refresh" content="0;url=' . $location . '"/>';
             echo '</noscript>';
             exit();
         }

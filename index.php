@@ -33,4 +33,7 @@ $url = isset($_SERVER['PATH_INFO']) ? explode('/', ltrim($_SERVER['PATH_INFO'], 
 
 $db = Database::getInstance();
 
+if (!Session::exists(CURRENT_USER_SESSION_NAME) && Cookie::exists(REMEMBER_ME_COOKIE)) {
+    UserModel::loginUserFromCookie();
+}
 Router::route($url);
