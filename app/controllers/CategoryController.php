@@ -13,11 +13,13 @@ class CategoryController extends Controller
 
     public function indexAction()
     {
+        Log::logAction('Category', 'Index', -1);
         Router::redirect('');
     }
 
     public function viewAction($id = -1)
     {
+        Log::logAction('Category', 'View', $id);
         $this->load_model("CategoryModel");
         $this->load_model('ThreadModel');
         $this->view->category = $this->CategoryModel->findById($id);
@@ -26,42 +28,6 @@ class CategoryController extends Controller
         $this->view->render("category/category_detail");
     }
 
-    public function createAction($id)
-    {
-        if ($_POST) {
-            $validation = new Validate();
-            $validation->validate($_POST, [
-                'title' => [
-                    'display' => 'Title',
-                    'required' => true,
-                    'min' => '6'
-                ],
-                'body' => [
-                    'display' => 'Body',
-                    'required' => true,
-                    'min' => 69
-                ],
-                'category' => [
-                    'display' => 'Category',
-                    'required' => true
-                ]
-            ]);
-            if ($validation->passed()) {
-                $model = new ThreadModel();
-                $model->title = Input::sanitize($_POST['title']);
-                $model->body = Input::sanitize($_POST['body']);
-                $model->category_id = $_POST['category'];
-                $model->created_by = UserModel::currentLoggedInUser()->id;
-                $model->save();
-            }else{
-                $this->view->errors = $validation->displayErrors();
-            }
-            $this->view->fields = $_POST;
-        }
-        $categories = new CategoryModel();
-        $this->view->categories = $categories->getAll();
-        $this->view->id = $id;
-        $this->view->render('thread/create_thread');
-    }
+
 
 }

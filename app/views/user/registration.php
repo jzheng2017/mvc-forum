@@ -9,7 +9,7 @@
 <div class="container">
     <div class="row">
         <h1 class="center">Registration</h1>
-        <form class="col s12 m4 offset-m4 card indigo" method="post">
+        <form class="col s12 m4 offset-m4 card " method="post">
             <?= $this->errors ?>
             <div class="card-content">
                 <div class="row">
@@ -66,7 +66,7 @@
                 </div>
                 <div class="row">
                     <div class="input=field col s12 center ">
-                        <input type="submit" class="btn btn-large blue accent-3 waves-effect">
+                        <input type="submit" class="btn btn-large blue accent-3" value="Register">
                     </div>
                 </div>
             </div>

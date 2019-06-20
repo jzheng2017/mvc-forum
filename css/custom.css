@@ -1,31 +1,42 @@
-.container{
+.container {
     width: 100%;
     max-width: 90%;
 }
 
 
-
-.bold{
-    font-weight:bold;
+.bold {
+    font-weight: bold;
 }
 
-a{
-    color:black;
-}
-footer a{
-    color:white !important;
+a {
+    color: black;
 }
 
+footer a {
+    color: white !important;
+}
 
 
 .social-media {
-    margin-right:10px;
+    margin-right: 10px;
 }
 
-footer>div .row{
-    margin-bottom:0px !important;
+footer > div .row {
+    margin-bottom: 0px !important;
 }
 
-main{
-    min-height:100vh;
+main {
+    min-height: 100vh;
 }
+
+input[type=submit] {
+    color: white !important;
+}
+
+
+
+.badge {
+    width:5px;
+    background: red;
+}
+

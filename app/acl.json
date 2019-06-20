@@ -1,0 +1,46 @@
+{
+  "Guest" : {
+    "denied" : {},
+    "Index" : ["*"],
+    "Category" : ["view"],
+    "Thread" : ["view"],
+    "User" : ["login", "registration"],
+    "Restricted" : ["*"],
+    "Error" : ["*"]
+  },
+  "User" : {
+    "denied" : {},
+    "Index" : ["*"],
+    "Category" : ["*"],
+    "Thread" : ["*"],
+    "User" : ["logout", "profile"],
+    "Error" : ["*"]
+  },
+  "Moderator" : {
+    "denied" : {},
+    "Index" : ["*"],
+    "Category" : ["*"],
+    "Thread" : ["*"],
+    "User" : ["logout", "profile"],
+    "Action" : ["remove", "report", "close"],
+    "Error" : ["*"]
+  },
+  "Staff" : {
+    "denied" : {},
+    "Index" : ["*"],
+    "Category" : ["*"],
+    "Thread" : ["*"],
+    "User" : ["logout", "profile"],
+    "Action" : ["remove", "report", "close", "delete"],
+    "Error" : ["*"]
+  },
+  "Admin" : {
+    "denied" : {},
+    "Index" : ["*"],
+    "Category" : ["*"],
+    "Thread" : ["*"],
+    "User" : ["logout", "profile"],
+    "Action" : ["*"],
+    "Error" : ["*"]
+  }
+}

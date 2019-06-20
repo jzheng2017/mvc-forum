@@ -9,9 +9,9 @@
 
     <h1 class="title center">Login</h1>
     <div class="row">
-        <form class="col s12 m4 l4 offset-m4 offset-l4 card indigo" method="post">
+        <form class="col s12 m4 l4 offset-m4 offset-l4 card" method="post">
             <?= $this->errors ?>
-            <div class="row indigo card-content">
+            <div class="row card-content">
                 <div class="input-field col s12">
                     <input class="validate" type="text" name="username" id="username" value="" required>
                     <label for="username">Username</label>
@@ -35,7 +35,7 @@
             <br>
             <div class="row">
                 <div class="col center s12">
-                    <input type="submit" class="btn btn-large blue accent-3 waves-effect " value="Login">
+                    <input type="submit" class="btn btn-large blue accent-3" value="Login">
                 </div>
             </div>
         </form>

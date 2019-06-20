@@ -102,11 +102,15 @@ class Model
     public function update($id, $fields)
     {
         if (empty($fields) || empty($id)) {
+            return false;
+        } else {
             return $this->db->update($this->table, $id, $fields);
         }
+
     }
 
-    public function delete($id)
+    public
+    function delete($id)
     {
         if (empty($id) && empty($this->id)) {
             return false;
@@ -120,12 +124,14 @@ class Model
 
     }
 
-    public function query($sql, $bind = [])
+    public
+    function query($sql, $bind = [])
     {
         return $this->db->query($sql, $bind);
     }
 
-    public function data()
+    public
+    function data()
     {
         $data = new stdClass();
 
@@ -135,12 +141,13 @@ class Model
         return $data;
     }
 
-    public function assign($params)
+    public
+    function assign($params)
     {
         if (!empty($params)) {
             foreach ($params as $key => $value) {
                 if (in_array($key, $this->columnNames)) {
-                    $this->key = sanitize($value);
+                    $this->$key = sanitize($value);
                 }
             }
             return true;

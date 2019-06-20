@@ -61,7 +61,6 @@ class Database
             $keys = array_keys($fields);
             $sql = "INSERT INTO {$table} (`" . implode('`, `', $keys) . "`) VALUES (" . str_repeat("?, ", count($keys) - 1) . "?)";
         }
-
         if (!$this->query($sql, array_values($fields))->error()) {
             return true;
         } else {

@@ -11,6 +11,7 @@ class IndexController extends Controller
 
     public function indexAction()
     {
+        Log::logAction('Index', '', -1);
         $this->load_model('CategoryModel');
         $db = Database::getInstance();
         $this->view->categories = $this->CategoryModel->getAll();

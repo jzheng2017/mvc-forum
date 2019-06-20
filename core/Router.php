@@ -5,6 +5,7 @@ class Router
 
     public static function route($url)
     {
+
         //controller
         $controller = (isset($url[0]) && $url[0] != '') ? ucwords($url[0]) : DEFAULT_CONTROLLER;
         $controller .= "Controller";
@@ -15,6 +16,14 @@ class Router
         $action = (isset($url[0]) && $url[0] != '') ? $url[0] . 'Action' : 'indexAction';
         $action_name = $action;
         array_shift($url);
+
+        //acl check
+        $grantAccess = ACL::hasAccess($controller_name, $action_name);
+
+        if (!$grantAccess){
+            $controller_name = $controller = ACCESS_RESTRICTED;
+            $action = 'indexAction';
+        }
 
         //params
         $queryParams = $url;
@@ -48,4 +57,5 @@ class Router
             exit();
         }
     }
+
 }

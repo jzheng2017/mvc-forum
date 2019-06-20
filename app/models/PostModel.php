@@ -20,15 +20,15 @@ class PostModel extends Model
                 foreach ($data as $key => $value) {
                     $this->$key = $value;
                 }
+                $this->getUser();
             }
         }
     }
 
     public function getUser()
     {
-        $user = $this->db->query(Query::get('get_user_info'), [$this->user_id])->first();
         $model = new UserModel();
-        $model->populate($user);
+        $model->getUserInfo($this->user_id);
         $this->user = $model;
         return $this->user;
     }

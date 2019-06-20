@@ -1,21 +1,22 @@
-<!DOCTYPE html>
+
 <html>
 <head>
     <title><?= $this->getSiteTitle() ?></title>
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
     <link rel="stylesheet" href="<?= PROOT ?>css/materialize.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="<?= PROOT ?>css/custom.css" media="screen" title="no title" charset="utf-8">
 
     <!--    Import font-awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <script src="<?= PROOT ?>js/jquery-3.4.1.min.js"></script>
-    <script src="<?= PROOT ?>js/materialize.min.js"></script>
-    <script src="<?= PROOT ?>js/custom.js"></script>
+    <!-- Fake favicon request to reduce payload-->
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+
+    <!-- View custom css and javascript-->
     <?= $this->content('head'); ?>
+
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
@@ -31,7 +32,7 @@
                     <ul class="right hide-on-med-and-down">
                         <?php if (UserModel::currentLoggedInUser()) { ?>
                             <li><a href="<?= PROOT ?>user/logout">Logout</a></li>
-                            <li><a href="<?= PROOT ?>user/inbox"><i class="material-icons">notifications</i></a></li>
+                            <li><a href="<?= PROOT ?>user/inbox"><span>Inbox</span><span class="badge white-text">3</span></a></li>
                             <li><a href="<?= PROOT ?>user/profile/" class="btn blue accent-4 waves-effect">My
                                     Profile</a>
                             </li>
@@ -40,7 +41,7 @@
                             <li><a href="<?= PROOT ?>user/login/" class="btn blue accent-4 waves-effect">Login</a></li>
                         <?php } ?>
                     </ul>
-                    <?php Component::get('sidenav') ?>
+                    <?= $this->renderComponent(new Component('sidenav')) ?>
                 </div>
             </div>
         </div>
@@ -63,18 +64,14 @@
                 <a href="//twitter.com/Skillaz2015" class="fa fa-twitter fa-lg social-media"></a>
             </div>
             <div class="col s12 m4 l3">
-                <h5 class="white-text">Support</h5>
-                <ul>
-                    <li><a href="<?= PROOT ?>contact-us">Contact us</a></li>
-                    <li><a href="<?= PROOT ?>contact-us">Contact us</a></li>
-
-
-                </ul>
+                <h5 class="white-text">Teet</h5>
             </div>
         </div>
     </div>
 </footer>
 <!--JavaScript at end of body for optimized loading-->
-<script type="text/javascript" src="js/materialize.min.js"></script>
+<script src="<?= PROOT ?>js/jquery-3.4.1.min.js"></script>
+<script src="<?= PROOT ?>js/custom.js"></script>
+<script type="text/javascript" src="<?= PROOT ?>js/materialize.min.js"></script>
 </body>
 </html>

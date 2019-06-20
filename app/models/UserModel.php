@@ -7,7 +7,7 @@ class UserModel extends Model
     private $session;
     private $cookie;
     public static $currentUser = null;
-    
+
 
     public function __construct($user = '')
     {
@@ -42,7 +42,8 @@ class UserModel extends Model
     public static function currentLoggedInUser()
     {
         if (!isset(self::$currentUser) && Session::exists(CURRENT_USER_SESSION_NAME)) {
-            $user = new UserModel((int)Session::get(CURRENT_USER_SESSION_NAME));
+            $user = new UserModel();
+            $user->getUserInfo((int)Session::get(CURRENT_USER_SESSION_NAME));
             self::$currentUser = $user;
         }
         return self::$currentUser;
@@ -83,7 +84,8 @@ class UserModel extends Model
         $userSession = UserSessionModel::getFromCookie();
         if ($userSession) {
             if ($userSession->user_id != '') {
-                $user = new self((int)$userSession->user_id);
+                $user = new self();
+                $user->getUserInfo((int)$userSession->user_id);
             }
             if ($user) {
                 $user->login();
@@ -92,11 +94,19 @@ class UserModel extends Model
         }
     }
 
-    public function registration($result){
+    public function registration($result)
+    {
         unset($result['confirm_email']);
         unset($result['confirm_password']);
         $result['password'] = password_hash($result['password'], PASSWORD_DEFAULT);
         $this->populate($result);
         $this->save();
     }
+
+    public function getUserInfo($id){
+
+        $user = $this->db->query(Query::get('get_user_info'), [$id])->first();
+        $this->populate($user);
+    }
+
 }

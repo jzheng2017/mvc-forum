@@ -7,10 +7,21 @@
 <?php $this->start('body'); ?>
 <div class="container">
     <h1><?= $this->thread->title ?></h1>
-
     <?php if (UserModel::currentLoggedInUser()) { ?>
-        <?php if ($this->thread->created_by == UserModel::currentLoggedInUser()->id) { ?>
-            <button class="btn blue accent-3 right">Delete thread</button>
+        <?php if (($this->thread->created_by == UserModel::currentLoggedInUser()->id) || (UserModel::currentLoggedInUser()->permission > 0)) { ?>
+            <form method="post">
+                <?php if ($this->thread->closed) { ?>
+                    <input type="submit" class="btn blue accent-3 right" name="status" value="Reopen thread">
+                <?php } else { ?>
+                    <input type="submit" class="btn blue accent-3 right" name="status" value="Close thread">
+                <?php } ?>
+            </form>
+        <?php }
+        ?>
+        <?php if (UserModel::currentLoggedInUser()->permission > 1) { ?>
+            <a href="<?= PROOT ?>action/remove/thread/<?= $this->thread->id ?>"
+               class="btn blue accent-3 right thread-action-button">Delete
+                thread</a>
         <?php }
     } ?>
     <div class="row">
@@ -18,22 +29,23 @@
             <div class="s12 center"><h5>Original post</h5></div>
             <div class="divider"></div>
             <div class="row">
-                <div class="s2">
-                    <div class="col s12 m2 l2">
-                        <div class="col s12">
-                            <img class="responsive-img" src="https://dummyimage.com/600x400/000/fff.jpg">
-                        </div>
-                        <div class="s12">
-                            <ul class="thread-user-info">
-                                <li>User: <?= $this->thread->user->username ?></li>
-                                <li>Reputation: <span class="<?= $this->thread->user->reputation > 0 ? "green-text" : ($this->thread->user->reputation == 0 ? "" : "red-text") ?>"><?= $this->thread->user->reputation ?></span></li>
-                                <li>Permission: User</li>
-                                <li>Posts: <?= $this->thread->user->post_count?></li>
-                                <li>Status: <span class="bold">Online</span></li>
-                            </ul>
-                        </div>
+                <div class="col s12 m2 l2">
+                    <div class="col s12">
+                        <img class="responsive-img" src="https://dummyimage.com/600x400/000/fff.jpg">
                     </div>
+                    <ul class="thread-user-info">
+                        <li>User: <?= $this->thread->user->username ?></li>
+                        <li>Reputation: <span
+                                    class="<?= $this->thread->user->reputation > 0 ? "green-text" : ($this->thread->user->reputation == 0 ? "" : "red-text") ?>"><?= $this->thread->user->reputation ?></span>
+                        </li>
+                        <li>Permission: <?= ucwords($this->thread->user->role) ?></li>
+                        <li>Posts: <?= $this->thread->user->post_count ?></li>
+                        <li>
+                            Status: <?= $this->thread->user->status ? '<span class="bold">Online</span>' : "Offline" ?></li>
+                    </ul>
+
                 </div>
+
                 <div class="s12 m10 l10">
                     <p class="post-text">
                         <?= $this->thread->body ?>
@@ -57,7 +69,8 @@
             <?php foreach ($this->thread->posts as $post) { ?>
                 <div class="col s12 card">
 
-                    <div class="s12 center"><h5>Post #<?= $index ?></h5></div>
+                    <div class="s12 center"><h5>Post #<?= $index ?></h5> <span
+                                class="right"><?= $post->date_created ?></span></div>
                     <div class="divider"></div>
                     <div class="row">
                         <div class="s2">
@@ -68,10 +81,13 @@
                                 <div class="s12">
                                     <ul class="thread-user-info">
                                         <li>User: <?= $post->user->username ?></li>
-                                        <li>Reputation: <span class="<?= $post->user->reputation > 0 ? "green-text" : ($post->user->reputation == 0 ? "" : "red-text") ?>"><?= $post->user->reputation ?></span></li>
-                                        <li>Permission: User</li>
-                                        <li>Posts: <?= $post->user->post_count?></li>
-                                        <li>Status: <span class="bold">Online</span></li>
+                                        <li>Reputation: <span
+                                                    class="<?= $post->user->reputation > 0 ? "green-text" : ($post->user->reputation == 0 ? "" : "red-text") ?>"><?= $post->user->reputation ?></span>
+                                        </li>
+                                        <li>Permission: <?= ucwords($post->user->role) ?></li>
+                                        <li>Posts: <?= $post->user->post_count ?></li>
+                                        <li>
+                                            Status: <?= $post->user->status ? '<span class="bold">Online</span>' : 'Offline' ?></li>
                                     </ul>
                                 </div>
                             </div>
@@ -85,25 +101,23 @@
 
                     <?php if (UserModel::currentLoggedInUser()) { ?>
                         <div class="col s12">
-                            <form method="post" class="row">
-                                <button class="col s6 m2 l1 btn blue accent-3 right thread-action-button" name="post"
-                                        value="<?= $post->user_id ?>">Report post
-                                </button>
-                                <button class="col s6 m2 l1 btn blue accent-3 right thread-action-button" name="user"
-                                        value="<?= $post->user_id ?>">Report user
-                                </button>
+                            <div class="row">
+                                <a href="<?= PROOT ?>action/report/post/<?= $post->id ?>"
+                                   class="col s12 m2 l1 btn blue accent-3 right thread-action-button">Report post</a>
+
+                                <a href="<?= PROOT ?>action/report/user/<?= $post->user_id ?>"
+                                   class="col s12 m2 l1 btn blue accent-3 right thread-action-button">Report user</a>
 
                                 <?php if (UserModel::currentLoggedInUser()->permission > 1) { ?>
-                                    <button class="col s6 m2 l1 btn blue accent-3 right thread-action-button" name="ban"
-                                            value="<?= $post->user_id ?>">Ban user
-                                    </button>
+                                    <a href="<?= PROOT ?>action/ban/user/<?= $post->user_id ?>"
+                                       class="col s12 m2 l1 btn blue accent-3 right thread-action-button">Ban user</a>
                                 <?php } ?>
                                 <?php if (UserModel::currentLoggedInUser()->permission > 0) { ?>
-                                    <button class="col s6 m2 l1 btn blue accent-3 right thread-action-button" name="remove"
-                                            value="<?= $post->id ?>">Remove post
-                                    </button>
+                                    <a href="<?= PROOT ?>action/remove/post/<?= $post->id ?>"
+                                       class="col s12 m2 l1 btn blue accent-3 right thread-action-button">Remove
+                                        post</a>
                                 <?php } ?>
-                            </form>
+                            </div>
                         </div>
                     <?php } ?>
 
@@ -113,29 +127,22 @@
             } ?>
         <?php } ?>
         <?php if (UserModel::currentLoggedInUser()) { ?>
-            <div class="row">
-                <form method="post" class="col s12 card">
-                    <h5>Place a post</h5>
-                    <?php if ($this->errors){?>
-                        <div class="card red lighten-2">
-                            <div class="card-content">
-                                <ul>
-                                    <?php foreach ($this->errors as $error){?>
-                                        <li><?= $error ?></li>
-                                    <?php }?>
-                                </ul>
-                            </div>
+            <?php if (UserModel::currentLoggedInUser()->permission >= 0 && !$this->thread->closed) { ?>
+                <div class="row">
+                    <form method="post" class="col s12 card">
+                        <h5>Place a post</h5>
+                        <?= $this->errors ?>
+                        <div class="input-field">
+                        <textarea name="body"
+                                  class="materialize-textarea"><?= isset($_POST['body']) ? $_POST['body'] : "" ?></textarea>
                         </div>
-                    <?php }?>
-                    <div class="input-field">
-                        <textarea name="body" class="materialize-textarea"><?= isset($_POST['body']) ? $_POST['body'] : ""  ?></textarea>
-                    </div>
-                    <div class="input-field right">
-                        <input type="submit" value"insert" name="insert" class="btn blue accent-3">
-                    </div>
-                </form>
-            </div>
-        <?php } ?>
+                        <div class="input-field right">
+                            <input type="submit" value"insert" name="insert" class="btn blue accent-3">
+                        </div>
+                    </form>
+                </div>
+            <?php }
+        } ?>
     </div>
     <?php $this->end(); ?>
 

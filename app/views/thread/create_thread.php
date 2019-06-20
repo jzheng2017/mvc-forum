@@ -32,7 +32,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input type="submit" class="btn btn-large blue accent-3 waves-effect">
+                    <input type="submit" class="btn btn-large blue accent-3">
                 </div>
             </div>
         </form>

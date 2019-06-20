@@ -1,4 +1,4 @@
-<?php $this->setSiteTitle('Test'); ?>
+<?php $this->setSiteTitle('Homepage'); ?>
 
 <?php $this->start('head'); ?>
 <?php $this->end(); ?>

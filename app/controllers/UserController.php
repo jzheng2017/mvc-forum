@@ -7,15 +7,18 @@ class UserController extends Controller
     {
         parent::__construct($controller, $action);
         $this->view->setLayout('default');
+
     }
 
     public function indexAction()
     {
+        Log::logAction('User', 'Index', -1);
         Router::redirect('');
     }
 
     public function registrationAction()
     {
+        Log::logAction('User', 'Registration', -1);
         $model = new CountryModel();
         $model->getAll();
         $this->view->countries = $model->countries;
@@ -56,9 +59,9 @@ class UserController extends Controller
                 ],
                 'last_name' => [
                     'display' => 'Lat name',
-                    'required'=> true
+                    'required' => true
                 ],
-                'street'=>[
+                'street' => [
                     'display' => 'Street',
                     'required' => true
                 ],
@@ -67,18 +70,19 @@ class UserController extends Controller
                     'required' => true,
                     'is_numeric' => true
                 ],
-                'zipcode'=>[
+                'zipcode' => [
                     'display' => 'Zipcode',
-                    'required'=>true
+                    'required' => true
                 ],
-                'country'=>[
+                'country' => [
                     'display' => 'Country',
-                    'required'=> true
+                    'required' => true
                 ]
             ]);
             if ($validation->passed()) {
                 $user = new UserModel();
                 $user->registration($_POST);
+                Router::redirect('user/login');
             } else {
                 $this->view->errors = $validation->displayErrors();
             }
@@ -89,6 +93,7 @@ class UserController extends Controller
 
     public function loginAction()
     {
+        Log::logAction('User', 'Login', -1);
         $this->load_model('UserModel');
 
         if ($_POST) {
@@ -106,13 +111,19 @@ class UserController extends Controller
             ]);
 
             if ($validation->passed()) {
-
                 $user = $this->UserModel->findByUsername($_POST['username']);
-
-                if (password_verify(Input::get('password'), $user->password)) {
-                    $remember = (isset($_POST['remember']) && Input::get('remember')) ? true : false;
-                    $user->login($remember);
-                    Router::redirect('');
+                if ($user->id) {
+                    if (password_verify(Input::get('password'), $user->password)) {
+                        $remember = (isset($_POST['remember']) && Input::get('remember')) ? true : false;
+                        $user->login($remember);
+                        Router::redirect('');
+                    } else {
+                        $validation->addError("Username or password is incorrect.");
+                        $this->view->errors = $validation->displayErrors();
+                    }
+                } else {
+                    $validation->addError("Username or password is incorrect.");
+                    $this->view->errors = $validation->displayErrors();
                 }
 
             } else {
@@ -125,6 +136,7 @@ class UserController extends Controller
 
     public function logoutAction()
     {
+        Log::logAction('User', 'Logout', -1);
         if (UserModel::currentLoggedInUser()) {
             UserModel::currentLoggedInUser()->logout();
             Router::redirect('user/login');
@@ -135,6 +147,7 @@ class UserController extends Controller
 
     public function profileAction()
     {
+        Log::logAction('User', 'Profile', -1);
         $this->view->render('user/profile');
     }
 }

@@ -3,13 +3,21 @@
 
 class Component
 {
+    public $body;
 
-    private function __construct()
+    public function __construct($component)
     {
-        //cannot be instantiated
+        $filePath = ROOT . DS . 'app' . DS . 'components'. DS . $component . ".php";
+        if (file_exists($filePath)){
+        ob_start();
+        require_once($filePath);
+        $this->body = ob_get_clean();
+        }else{
+            $this->body = "Contents could not be loaded, check if file exists: " . $filePath;
+        }
     }
 
-    public static function get($component){
-        require_once(ROOT . DS . 'app' . DS . 'components'. DS . $component . ".php");
+    public function render(){
+        return $this->body;
     }
 }

@@ -75,7 +75,10 @@ class Validate
             }
         }
         if (empty($this->errors)){
+            Session::delete('errors');
             $this->passed = true;
+        }else{
+            Session::set('errors', $this->errors());
         }
     }
 

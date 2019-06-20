@@ -11,6 +11,8 @@ class ThreadModel extends Model
         $table = 'threads';
         parent::__construct($table);
         $this->model = 'ThreadModel';
+        $this->softDelete = true;
+
         $data = [];
         if ($thread != '') {
             if (is_int($thread)) {
@@ -20,6 +22,7 @@ class ThreadModel extends Model
                 foreach ($data as $key => $value) {
                     $this->$key = $value;
                 }
+                $this->getUser();
             }
         }
     }
@@ -34,6 +37,8 @@ class ThreadModel extends Model
                 $thread = (array)$thread;
                 $model = new ThreadModel();
                 $model->populate($thread);
+                $model->posts = $model->getPosts();
+                $model->user = $model->getUser();
                 $list[] = $model;
             }
         }
@@ -59,10 +64,13 @@ class ThreadModel extends Model
 
     public function getUser()
     {
-        $user = $this->db->query(Query::get('get_user_info'), [$this->created_by])->first();
         $model = new UserModel();
-        $model->populate($user);
+        $model->getUserInfo($this->created_by);
         $this->user = $model;
         return $this->user;
+    }
+
+    public function generateUrl(){
+        return 'thread/view/' . $this->db->lastId();
     }
 }

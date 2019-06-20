@@ -27,6 +27,10 @@ class View
         }
     }
 
+    public function renderComponent(Component $component){
+        return $component->render();
+    }
+
     public function content($type)
     {
         if ($type == 'head') {
