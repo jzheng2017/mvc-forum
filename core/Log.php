@@ -13,7 +13,7 @@ class Log
         $db = Database::getInstance();
         $data = [];
 
-       isset($_SERVER['PATH_INFO']) ? Session::set('path_link', $_SERVER['PATH_INFO']) : Session::set('path_link', "index");
+        isset($_SERVER['PATH_INFO']) ? Session::set('path_link', $_SERVER['PATH_INFO']) : Session::set('path_link', "index");
         $user = isset(UserModel::currentLoggedInUser()->id) ? UserModel::currentLoggedInUser()->id : -1;
         isset($_POST) ? $data = json_encode($_POST) : $data = json_encode($_GET);
         $db->insert('user_log', ['type' => $type, 'action' => $action, 'object_id' => $object_id, 'user_id' => $user, 'user_ip' => self::getIPAddress(), 'session_data' => json_encode($_SESSION), 'data' => $data]);

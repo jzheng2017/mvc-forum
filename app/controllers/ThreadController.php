@@ -23,7 +23,9 @@ class ThreadController extends Controller
         !empty($this->view->thread->id) ? "" : Router::redirect('error'); // if thread doesn't exist
         if (isset($_POST['insert']) && UserModel::currentLoggedInUser()->permission >= 0) {
             $validation = new Validate();
-            if (time() - Session::get('last_posted') > 60) { //checks if the user has posted in the last minute
+            $last_posted = Util::lastAction('thread_post');
+            $last_posted = $last_posted ? strtotime($last_posted->date_created) : 0;
+            if (time() - $last_posted > 60) { //checks if the user has posted in the last minute
                 $validation->validate($_POST, [
                     'body' => [
                         'display' => 'Post',
@@ -36,18 +38,18 @@ class ThreadController extends Controller
                     $post->user_id = UserModel::currentLoggedInUser()->id;
                     $post->thread_id = $id;
                     $post->save();
-                    Session::set('last_posted', time());
                     Router::redirect('thread/view/' . $id);
                 } else {
                     $this->view->errors = $validation->displayErrors();
+
                 }
             } else {
-                if (Session::get('last_posted')) {
-                    $validation->addError("You have to wait " . ((Session::get('last_posted') - time()) + 60) . " second(s) to post again.");
+
+                    $validation->addError("You have to wait " . (($last_posted - time()) + 60) . " second(s) to post again.");
                     $this->view->errors = $validation->displayErrors();
-                }
+
             }
-        } else if (isset($_POST['status']) && UserModel::currentLoggedInUser()->permission > 0) {
+        } else if (isset($_POST['status']) && UserModel::currentLoggedInUser()->permission > 0) { //change thread status to open or closed depending on the current status
             $this->view->thread->closed = !$this->view->thread->closed;
             $this->view->thread->save();
         }

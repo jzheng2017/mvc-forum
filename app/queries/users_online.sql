@@ -1,0 +1,1 @@
+SELECT COUNT(DISTINCT user_id) as users_online FROM user_log WHERE user_id > -1 AND TIMESTAMPDIFF(SECOND, action_time, now()) < 300

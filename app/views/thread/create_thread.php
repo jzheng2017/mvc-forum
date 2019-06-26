@@ -32,7 +32,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input type="submit" class="btn btn-large blue accent-3">
+                    <input type="submit" class="btn blue accent-3" value="Create thread">
                 </div>
             </div>
         </form>

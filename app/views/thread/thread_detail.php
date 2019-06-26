@@ -43,7 +43,7 @@
                         <li>
                             Status: <?= $this->thread->user->status ? '<span class="bold">Online</span>' : "Offline" ?></li>
                     </ul>
-
+                    <div class="divider hide-on-med-and-up"></div>
                 </div>
 
                 <div class="s12 m10 l10">
@@ -89,6 +89,7 @@
                                         <li>
                                             Status: <?= $post->user->status ? '<span class="bold">Online</span>' : 'Offline' ?></li>
                                     </ul>
+                                    <div class="divider hide-on-med-and-up"></div>
                                 </div>
                             </div>
                         </div>

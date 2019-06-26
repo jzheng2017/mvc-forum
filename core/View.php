@@ -27,7 +27,7 @@ class View
         }
     }
 
-    public function renderComponent(Component $component){
+    public static function renderComponent(Component $component){
         return $component->render();
     }
 

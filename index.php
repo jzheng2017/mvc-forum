@@ -14,6 +14,7 @@ function autoload($className)
     $core = ROOT . DS . 'core' . DS . $className . '.php';
     $controller = ROOT . DS . 'app' . DS . 'controllers' . DS . $className . '.php';
     $model = ROOT . DS . 'app' . DS . 'models' . DS . $className . '.php';
+    $component = ROOT . DS . 'app' . DS . 'components' . DS . $className . '.php';
 
     if (file_exists($core)) {
         require_once($core);
@@ -21,6 +22,8 @@ function autoload($className)
         require_once($controller);
     } else if (file_exists($model)) {
         require_once($model);
+    } else if (file_exists($component)){
+        require_once($component);
     }
 }
 

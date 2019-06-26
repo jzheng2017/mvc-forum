@@ -145,9 +145,105 @@ class UserController extends Controller
         }
     }
 
-    public function profileAction()
+    public function profileAction($id = -1)
     {
-        Log::logAction('User', 'Profile', -1);
+        Log::logAction('User', 'Profile', $id);
+
+        if (($id == -1 || $id == '') && UserModel::currentLoggedInUser()) {
+            $model = new UserModel((int)UserModel::currentLoggedInUser()->id);
+            if ($model->exists()) {
+                $this->view->model = $model;
+            } else {
+                Router::redirect('error');
+            }
+        } else if ($id > -1) {
+
+            $model = new UserModel((int)$id);
+            if ($model->exists()) {
+                $this->view->model = $model;
+            } else {
+                Router::redirect('error');
+            }
+        }
         $this->view->render('user/profile');
+    }
+
+    public function mailAction($id = -1)
+    {
+        Log::logAction('User', 'Mail', $id);
+        $this->view->sent = false;
+        if ($_POST) {
+            $validation = new Validate();
+            $last_message = Util::lastAction('user_message');
+            $last_message = $last_message ? strtotime($last_message->date_created) : 0;
+            if (time() - $last_message > 600) {
+
+                $validation->validate($_POST, [
+                    'title' => [
+                        'display' => 'Title',
+                        'min' => 6,
+                        'max' => 255,
+                        'required' => true
+                    ],
+                    'body' => [
+                        'display' => 'Message',
+                        'min' => 69,
+                        'max' => 4269,
+                        'required' => true
+                    ]
+                ]);
+                if ($validation->passed()) {
+                    $model = new UserMessageModel();
+                    $model->title = Input::get('title');
+                    $model->body = Input::get('body');
+                    $model->sender = UserModel::currentLoggedInUser()->id;
+                    $model->recipient = $id;
+                    $model->save();
+                    $this->view->title = $_POST['title'];
+                    $this->view->message = $_POST['body'];
+                    $this->view->sent = true;
+                } else {
+                    $this->view->errors = $validation->displayErrors();
+                }
+            } else {
+                $validation->addError("You have to wait " . (($last_message - time()) + 600) . " second(s) to post again.");
+                $this->view->errors = $validation->displayErrors();
+            }
+        }
+        $model = new UserModel((int)$id);
+        $model->exists() ? "" : Router::redirect('error/user');
+        $this->view->model = $model;
+        $this->view->render('actions/mail');
+    }
+
+    public function messageAction($id)
+    {
+        $model = new UserMessageModel((int)$id);
+        $model->recipient != UserModel::currentLoggedInUser()->id ? Router::redirect('restricted') : "";
+        if (!$model->opened) {
+            $model->opened = 1;
+            $model->save();
+        }
+        $this->view->message = $model;
+        $this->view->render('user/message');
+    }
+
+    public function inboxAction($type = 'received')
+    {
+        Log::logAction('User', 'Inbox', -1);
+        $db = Database::getInstance();
+
+        if ($type == 'received') {
+            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0], "order" => ["date_created", "DESC"]]);
+            $this->view->messages = $result;
+        } else if ($type == 'sent') {
+            $result = $db->find("user_messages", ["conditions" => ["sender = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0], "order" => ["date_created", "DESC"]]);
+            $this->view->messages = $result;
+        } else if ($type == 'trashcan') {
+            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 1], "order" => ["date_created", "DESC"]]);
+            $this->view->messages = $result;
+        }
+        $this->view->page = $type;
+        $this->view->render('user/inbox');
     }
 }

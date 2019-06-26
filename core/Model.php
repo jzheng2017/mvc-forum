@@ -109,8 +109,7 @@ class Model
 
     }
 
-    public
-    function delete($id)
+    public function delete($id)
     {
         if (empty($id) && empty($this->id)) {
             return false;
@@ -124,14 +123,12 @@ class Model
 
     }
 
-    public
-    function query($sql, $bind = [])
+    public function query($sql, $bind = [])
     {
         return $this->db->query($sql, $bind);
     }
 
-    public
-    function data()
+    public function data()
     {
         $data = new stdClass();
 
@@ -141,8 +138,7 @@ class Model
         return $data;
     }
 
-    public
-    function assign($params)
+    public function assign($params)
     {
         if (!empty($params)) {
             foreach ($params as $key => $value) {
@@ -155,7 +151,10 @@ class Model
         return false;
     }
 
-
+    public function exists()
+    {
+        return $this->id != NULL ? true : false;
+    }
 }
 
 

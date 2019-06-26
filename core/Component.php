@@ -7,7 +7,7 @@ class Component
 
     public function __construct($component)
     {
-        $filePath = ROOT . DS . 'app' . DS . 'components'. DS . $component . ".php";
+        $filePath = ROOT . DS . 'app' . DS . 'components'. DS . 'views' . DS . $component . ".php";
         if (file_exists($filePath)){
         ob_start();
         require_once($filePath);

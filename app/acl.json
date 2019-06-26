@@ -13,7 +13,8 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile"],
+    "User" : ["logout", "profile", "mail", "message", "inbox"],
+    "Stats" : ["*"],
     "Error" : ["*"]
   },
   "Moderator" : {
@@ -21,8 +22,9 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile"],
+    "User" : ["logout", "profile", "mail", "message", "inbox"],
     "Action" : ["remove", "report", "close"],
+    "Stats" : ["*"],
     "Error" : ["*"]
   },
   "Staff" : {
@@ -30,8 +32,9 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile"],
+    "User" : ["logout", "profile", "mail", "message", "inbox"],
     "Action" : ["remove", "report", "close", "delete"],
+    "Stats" : ["*"],
     "Error" : ["*"]
   },
   "Admin" : {
@@ -39,8 +42,9 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile"],
+    "User" : ["logout", "profile", "mail", "message", "inbox"],
     "Action" : ["*"],
+    "Stats" : ["*"],
     "Error" : ["*"]
   }
 }

@@ -22,30 +22,7 @@
 </head>
 <body>
 <header>
-    <nav class="indigo darken-3">
-        <div class="container">
-            <div class="nav-wrapper">
-                <div>
-                    <a href="<?= PROOT ?>" class="brand-logo">
-                        Logo
-                    </a>
-                    <ul class="right hide-on-med-and-down">
-                        <?php if (UserModel::currentLoggedInUser()) { ?>
-                            <li><a href="<?= PROOT ?>user/logout">Logout</a></li>
-                            <li><a href="<?= PROOT ?>user/inbox"><span>Inbox</span><span class="badge white-text">3</span></a></li>
-                            <li><a href="<?= PROOT ?>user/profile/" class="btn blue accent-4 waves-effect">My
-                                    Profile</a>
-                            </li>
-                        <?php } else { ?>
-                            <li><a href="<?= PROOT ?>user/registration">Create an account</a></li>
-                            <li><a href="<?= PROOT ?>user/login/" class="btn blue accent-4 waves-effect">Login</a></li>
-                        <?php } ?>
-                    </ul>
-                    <?= $this->renderComponent(new Component('sidenav')) ?>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?= View::renderComponent(new NavbarComponent('navbar'))?>
 </header>
 <main><?= $this->content('body'); ?></main>
 <footer class="page-footer indigo darken-3">
@@ -64,7 +41,8 @@
                 <a href="//twitter.com/Skillaz2015" class="fa fa-twitter fa-lg social-media"></a>
             </div>
             <div class="col s12 m4 l3">
-                <h5 class="white-text">Teet</h5>
+                <h5 class="white-text">Site statistics</h5>
+                <?= $this->renderComponent(new StatsComponent('stats'))?>
             </div>
         </div>
     </div>

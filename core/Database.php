@@ -157,6 +157,7 @@ class Database
             $limit = 'LIMIT ' . $params['limit'];
         }
         $sql = "SELECT * FROM {$table} {$conditionString} {$order} {$limit}";
+
         if ($this->query($sql, $bind)) {
             if (!count($this->result)) {
 
