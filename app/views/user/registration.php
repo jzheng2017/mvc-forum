@@ -50,11 +50,11 @@
                         <label for="street_nr">Street number</label>
                     </div>
                     <div class="input-field col s12 m6">
-                        <input type="text" id="zipcode" name="zipcode" value="<?= isset($this->fields['zipcode']) ? $this->fields['zipcode'] : "" ?>"required>
+                        <input type="text" id="zipcode" name="zipcode" value="<?= isset($this->fields['zipcode']) ? $this->fields['zipcode'] : "" ?>" required>
                         <label for="zipcode">Zipcode</label>
                     </div>
                     <div class="input-field col s12 m6">
-                        <select name="country" id="country">
+                        <select name="country" id="country" required>
                             <option value="" disabled selected>Select a country</option>
                             <?php foreach ($this->countries as $country){?>
                                 <option value="<?= $country->country_code?>" <?= isset($this->fields['country']) ? ($country->country_code == $this->fields['country']) ? "selected" : "" : ""?> ><?=$country->country_name?></option>

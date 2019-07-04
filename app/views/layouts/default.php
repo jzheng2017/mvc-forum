@@ -29,16 +29,14 @@
     <div class="container">
         <div class="row">
             <div class="col s12 m4 l3">
-                <h5 class="white-text">Footer Content</h5>
-                <a class="top-link white-text popout" href="<?= PROOT ?>PrivacyVerklaring">Privacy Verklaring</a>
-                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer
-                    content.</p>
+                <h5 class="white-text">meh</h5>
+
             </div>
             <div class="col s12 m4 l3">
                 <h5 class="white-text">Social Media</h5>
-                <a href="//instagram.com/jiankai.ly" class="fa fa-instagram fa-lg social-media"></a>
-                <a href="//facebook.com" class="fa fa-facebook fa-lg social-media"></a>
-                <a href="//twitter.com/Skillaz2015" class="fa fa-twitter fa-lg social-media"></a>
+                <a href="//instagram.com/jiankai.ly" target="_blank" class="fa fa-instagram fa-lg social-media"></a>
+<!--                <a href="//facebook.com" class="fa fa-facebook fa-lg social-media"></a>-->
+                <a href="//twitter.com/Skillaz2015" target="_blank" class="fa fa-twitter fa-lg social-media"></a>
             </div>
             <div class="col s12 m4 l3">
                 <h5 class="white-text">Site statistics</h5>

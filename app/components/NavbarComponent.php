@@ -7,13 +7,14 @@ class NavbarComponent extends Component
 
     public function __construct($component)
     {
-        $this->inbox();
+        UserModel::currentLoggedInUser() ? $this->inbox() : "";
         parent::__construct($component);
     }
 
-    public function inbox(){
+    public function inbox()
+    {
         $db = Database::getInstance();
-        $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "opened = ?" ,"deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0, 0], "order" => ["date_created", "DESC"]]);
+        $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "opened = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0, 0], "order" => ["date_created", "DESC"]]);
         $this->inbox = $result ? count($result) : "";
     }
 }

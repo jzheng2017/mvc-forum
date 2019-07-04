@@ -8,6 +8,7 @@ class Util
         //can not be instantiated
     }
 
+    //generate link to the object passed in from the parameters
     public static function userCurrentPage($controller, $action, $object_id)
     {
         if ($controller == 'Statistics') {
@@ -44,6 +45,7 @@ class Util
         }
     }
 
+    //get last action from an object, for instance get last action from thread (last post)
     public static function lastAction($type, $id = '')
     {
         $db = Database::getInstance();
@@ -61,8 +63,7 @@ class Util
                 $result = $db->findFirst('thread_posts', ['conditions' => ['user_id = ?'], 'bind' => [UserModel::currentLoggedInUser()->id], 'order' => ['date_created', 'DESC']]);
             }
             return $result;
-        }
-        else if ($type == 'user_message') {
+        } else if ($type == 'user_message') {
             if ($id != '') {
                 $result = $db->findFirst('user_messages', ['conditions' => ['sender = ?', 'id = ?'], 'bind' => [UserModel::currentLoggedInUser()->id, $id], 'order' => ['date_created', 'DESC']]);
             } else {
@@ -70,5 +71,34 @@ class Util
             }
             return $result;
         }
+    }
+
+    //Checks in the database whether the input exists, for instance an username
+    public static function exists($type, $input)
+    {
+        $db = Database::getInstance();
+
+        if ($type == 'email') {
+            return $db->findFirst('users', ['conditions' => ['email = ?'], 'bind' => [$input]]);
+        } else if ($type == 'username') {
+            return $db->findFirst('users', ['conditions' => ['username = ?'], 'bind' => [$input]]);
+        }
+    }
+
+    //recover user by looking for username or email
+    public static function getByUsernameEmail($user)
+    {
+        $email = self::exists('email', $user);
+        $username = self::exists('username', $user);
+        if ($email) {
+            return $email;
+        } else if ($username) {
+            return $username;
+        }
+    }
+
+    //generate random code
+    public static function generateCode(){
+        return base64_encode(md5(rand()));
     }
 }

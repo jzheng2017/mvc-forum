@@ -164,6 +164,8 @@ class UserController extends Controller
             } else {
                 Router::redirect('error');
             }
+        } else {
+            Router::redirect('error');
         }
         $this->view->render('user/profile');
     }
@@ -177,7 +179,6 @@ class UserController extends Controller
             $last_message = Util::lastAction('user_message');
             $last_message = $last_message ? strtotime($last_message->date_created) : 0;
             if (time() - $last_message > 600) {
-
                 $validation->validate($_POST, [
                     'title' => [
                         'display' => 'Title',
@@ -216,15 +217,43 @@ class UserController extends Controller
         $this->view->render('actions/mail');
     }
 
-    public function messageAction($id)
+    public function messageAction($id = -1)
     {
+        Log::logAction('User', 'Message', $id);
         $model = new UserMessageModel((int)$id);
-        $model->recipient != UserModel::currentLoggedInUser()->id ? Router::redirect('restricted') : "";
-        if (!$model->opened) {
+        (($model->recipient != UserModel::currentLoggedInUser()->id) && ($model->sender != UserModel::currentLoggedInUser()->id)) ? Router::redirect('restricted') : ""; //if you're not the sender or recipient you don't have access to this message
+        if (!$model->opened && $model->recipient == UserModel::currentLoggedInUser()->id) {//change message status to opened
             $model->opened = 1;
             $model->save();
         }
+
         $this->view->message = $model;
+
+
+        if ($_POST) {
+            $validation = new Validate();
+            $validation->validate($_POST, [
+                'body' => [
+                    'display' => 'Message',
+                    'required' => true,
+                    'min' => 69,
+                    'max' => 2700
+                ]
+            ]);
+
+            if ($validation->passed()) {
+                $message = new UserMessageModel();
+                $message->title = $model->title;
+                $message->body = Input::get('body');
+                $message->sender = UserMOdel::currentLoggedInUser()->id;
+                $message->recipient = $model->sender;
+                $message->save();
+                Router::redirect('user/message/' . $message->getLastInsertID());
+            } else {
+                $this->view->errors = $validation->displayErrors();
+            }
+        }
+
         $this->view->render('user/message');
     }
 
@@ -246,4 +275,5 @@ class UserController extends Controller
         $this->view->page = $type;
         $this->view->render('user/inbox');
     }
+
 }

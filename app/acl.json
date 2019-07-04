@@ -5,7 +5,9 @@
     "Category" : ["view"],
     "Thread" : ["view"],
     "User" : ["login", "registration"],
+    "Recovery" : ["*"],
     "Restricted" : ["*"],
+    "Stats" : ["*"],
     "Error" : ["*"]
   },
   "User" : {

@@ -1,8 +1,16 @@
 <?php
 $this->start('body') ?>
     <div class="container">
+        <?php if ($this->type == 'post') { ?>
+            <?php if ($this->object->getParent()->deleted) { ?>
+                <div class="card red lighten-1">
+                    <div class="card-content">
+                        <p>This post is part of an inactive/removed thread.</p>
+                    </div>
+                </div>
+            <?php } ?>
+        <?php } ?>
         <div class="row">
-
             <div class="col s12 m4">
                 <h1><?= ucwords($this->action) . " " . $this->type ?></h1>
                 <table>
@@ -25,8 +33,9 @@ $this->start('body') ?>
 
             <div class="col s12 m4 offset-m1">
                 <div class="row">
-                    <h1>Reason for removal</h1>
+                    <h1>Reason for <?= $this->action == 'remove' ? 'removal' : 'report'?></h1>
                     <?php if (isset($this->model->id)) { ?>
+
                         <div class="card">
                             <div class="card-content">
                                 <span class="card-title">Action done by: <?= $this->model->user->username ?> - <?= $this->model->date_created ?></span>

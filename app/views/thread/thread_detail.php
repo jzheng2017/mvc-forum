@@ -34,7 +34,9 @@
                         <img class="responsive-img" src="https://dummyimage.com/600x400/000/fff.jpg">
                     </div>
                     <ul class="thread-user-info">
-                        <li>User: <?= $this->thread->user->username ?></li>
+                        <li>User: <a
+                                    href="<?= PROOT ?>user/profile/<?= $this->thread->user->id ?>"><?= $this->thread->user->username ?></a>
+                        </li>
                         <li>Reputation: <span
                                     class="<?= $this->thread->user->reputation > 0 ? "green-text" : ($this->thread->user->reputation == 0 ? "" : "red-text") ?>"><?= $this->thread->user->reputation ?></span>
                         </li>
@@ -53,7 +55,7 @@
                 </div>
             </div>
             <?php if (UserModel::currentLoggedInUser()) { ?>
-                <?php if ($this->thread->created_by == UserModel::currentLoggedInUser()->id) { ?>
+                <?php if ($this->thread->created_by == UserModel::currentLoggedInUser()->id && !$this->thread->closed) { ?>
                     <div class="row">
 
                         <button class="btn blue accent-3 right thread-action-button">Edit post</button>
@@ -68,7 +70,6 @@
             $index = 1; ?>
             <?php foreach ($this->thread->posts as $post) { ?>
                 <div class="col s12 card">
-
                     <div class="s12 center"><h5>Post #<?= $index ?></h5> <span
                                 class="right"><?= $post->date_created ?></span></div>
                     <div class="divider"></div>
@@ -80,7 +81,9 @@
                                 </div>
                                 <div class="s12">
                                     <ul class="thread-user-info">
-                                        <li>User: <?= $post->user->username ?></li>
+                                        <li>User: <a
+                                                    href="<?= PROOT ?>user/profile/<?= $post->user->id ?>"><?= $post->user->username ?></a>
+                                        </li>
                                         <li>Reputation: <span
                                                     class="<?= $post->user->reputation > 0 ? "green-text" : ($post->user->reputation == 0 ? "" : "red-text") ?>"><?= $post->user->reputation ?></span>
                                         </li>
@@ -101,23 +104,37 @@
                     </div>
 
                     <?php if (UserModel::currentLoggedInUser()) { ?>
+
                         <div class="col s12">
                             <div class="row">
-                                <a href="<?= PROOT ?>action/report/post/<?= $post->id ?>"
-                                   class="col s12 m2 l1 btn blue accent-3 right thread-action-button">Report post</a>
+                                <!-- Dropdown Trigger -->
+                                <a class='dropdown-trigger btn blue accent-3  right' href='#' data-target='dropdown<?=$index?>'><span class="user">User Actions</span> </a>
 
-                                <a href="<?= PROOT ?>action/report/user/<?= $post->user_id ?>"
-                                   class="col s12 m2 l1 btn blue accent-3 right thread-action-button">Report user</a>
+                                <!-- Dropdown Structure -->
+                                <ul id='dropdown<?=$index?>' class='dropdown-content'>
 
-                                <?php if (UserModel::currentLoggedInUser()->permission > 1) { ?>
-                                    <a href="<?= PROOT ?>action/ban/user/<?= $post->user_id ?>"
-                                       class="col s12 m2 l1 btn blue accent-3 right thread-action-button">Ban user</a>
-                                <?php } ?>
-                                <?php if (UserModel::currentLoggedInUser()->permission > 0) { ?>
-                                    <a href="<?= PROOT ?>action/remove/post/<?= $post->id ?>"
-                                       class="col s12 m2 l1 btn blue accent-3 right thread-action-button">Remove
-                                        post</a>
-                                <?php } ?>
+                                    <li>
+                                        <a href="<?= PROOT ?>action/report/post/<?= $post->id ?>">Report post</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= PROOT ?>action/report/user/<?=$post->user_id ?>">Report user</a>
+                                    </li>
+
+                                    <?php if (UserModel::currentLoggedInUser()->permission > 1) { ?>
+                                    <li>
+
+                                            <a href="<?= PROOT ?>action/ban/user/<?= $post->user_id ?>">Ban user</a>
+                                    </li>
+                                    <?php } ?>
+                                    <?php if (UserModel::currentLoggedInUser()->permission > 0) { ?>
+                                    <li>
+
+                                            <a href="<?= PROOT ?>action/remove/post/<?= $post->id ?>">Remove post</a>
+                                    </li>
+                                    <?php } ?>
+                                </ul>
+
+
                             </div>
                         </div>
                     <?php } ?>

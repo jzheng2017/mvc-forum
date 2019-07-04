@@ -33,4 +33,9 @@ class PostModel extends Model
         return $this->user;
     }
 
+    public function getParent(){
+        $model = new ThreadModel((int)$this->thread_id);
+        return $model;
+    }
+
 }

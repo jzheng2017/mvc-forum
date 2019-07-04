@@ -18,11 +18,13 @@ class Validate
         foreach ($items as $item => $rules) {
             $item = Input::sanitize($item);
             $display = $rules['display'];
+
             foreach ($rules as $rule => $rule_value) {
                 $value = Input::sanitize(trim($source[$item]));
                 if ($rule === 'required' && empty($value)) {
                     $this->addError(["{$display} is required", $item]);
-                } else if (!empty($value)) {
+
+                } else {
                     switch ($rule) {
                         case 'min':
                             if (strlen($value) < $rule_value) {

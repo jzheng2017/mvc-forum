@@ -30,7 +30,8 @@ class ThreadController extends Controller
                     'body' => [
                         'display' => 'Post',
                         'max' => 2700,
-                        'min' => '69']
+                        'min' => 69
+                    ]
                 ]);
                 if ($validation->passed()) {
                     $post = new PostModel();
@@ -45,8 +46,8 @@ class ThreadController extends Controller
                 }
             } else {
 
-                    $validation->addError("You have to wait " . (($last_posted - time()) + 60) . " second(s) to post again.");
-                    $this->view->errors = $validation->displayErrors();
+                $validation->addError("You have to wait " . (($last_posted - time()) + 60) . " second(s) to post again.");
+                $this->view->errors = $validation->displayErrors();
 
             }
         } else if (isset($_POST['status']) && UserModel::currentLoggedInUser()->permission > 0) { //change thread status to open or closed depending on the current status
@@ -59,18 +60,18 @@ class ThreadController extends Controller
     }
 
 
-    public function delete($action, $id)
-    {
-        Log::logAction('Thread', $action, $id);
-        if ($_POST && UserModel::currentLoggedInUser()->permission > 1) {
-            if ($action == 'post') {
-                $model = new PostModel();
-                $model->delete($id);
-            } else if ($action == 'thread') {
-
-            }
-        }
-    }
+//    public function delete($action, $id)
+//    {
+//        Log::logAction('Thread', $action, $id);
+//        if ($_POST && UserModel::currentLoggedInUser()->permission > 1) {
+//            if ($action == 'post') {
+//                $model = new PostModel();
+//                $model->delete($id);
+//            } else if ($action == 'thread') {
+//
+//            }
+//        }
+//    }
 
     public function createAction($id)
     {

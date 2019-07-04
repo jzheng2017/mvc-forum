@@ -1,8 +1,5 @@
 <?php $this->setSiteTitle('Login'); ?>
 
-<?php $this->start('head'); ?>
-<?php $this->end(); ?>
-
 <?php $this->start('body'); ?>
 <div class="container">
     <?php if (!UserModel::currentLoggedInUser()){?>
@@ -27,7 +24,7 @@
                             <span>Remember me</span>
                         </label>
                         <div class="input-field col s12 m6 l6">
-                            <a class="black-text right" href="<?= PROOT?>forgot-password"><b>Forgot password?</b></a>
+                            <a class="black-text right" href="<?= PROOT?>recovery"><b>Forgot password?</b></a>
                         </div>
                     </div>
                 </div>

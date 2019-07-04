@@ -14,7 +14,7 @@
                 <li class="collection-header"><h4><?=ucwords($this->page)?></h4></li>
                 <?php if ($this->messages){?>
                <?php foreach($this->messages as $message){?>
-               <a href="<?=PROOT?>user/message/<?=$message->id?>"><li class="collection-item <?=!$message->opened ? "bold" : ""?>"><?=$message->title?></li></a>
+               <a href="<?=PROOT?>user/message/<?=$message->id?>"><li class="collection-item <?=!$message->opened && $this->page != 'sent' ? "bold" : ""?>"><?=$message->title?></li></a>
                 <?php }?>
                 <?php }?>
             </ul>

@@ -5,3 +5,7 @@ h4{
 .profile-buttons a{
     margin-top:10px;
 }
+
+.file-button{
+    margin-top:-10px;
+}

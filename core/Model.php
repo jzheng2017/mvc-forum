@@ -155,6 +155,10 @@ class Model
     {
         return $this->id != NULL ? true : false;
     }
+
+    public function getLastInsertID(){
+        return $this->db->lastId();
+    }
 }
 
 

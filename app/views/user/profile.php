@@ -6,13 +6,32 @@
     <div class="row">
         <h1>Profile</h1>
         <div class="col s12 m4 l4">
-            <img class="responsive-img" src="https://dummyimage.com/600x400/000/fff.jpg">
-            <div class="hide-on-small-and-down profile-buttons">
-                <?php if ($this->model->id != UserModel::currentLoggedInUser()->id) { ?>
-                    <a href="<?= PROOT ?>user/mail/<?= $this->model->id ?>" class="btn blue accent-3">Send
-                        message</a>
-                    <a href="<?= PROOT ?>user/report/<?= $this->model->id ?>" class="btn blue accent-3">Report user</a>
-                <?php } ?>
+            <div class="row">
+                <div class="col s12">
+                    <img class="responsive-img" src="https://dummyimage.com/600x400/000/fff.jpg">
+                    <!--                    <form method="post">-->
+                    <!--                        <div class="file-field input-field">-->
+                    <!--                            <div class="btn blue accent-3">-->
+                    <!--                                <span>profile picture</span>-->
+                    <!--                                <input type="file">-->
+                    <!--                            </div>-->
+                    <!--                            <div class="file-path-wrapper">-->
+                    <!--                                <input class="file-path validate" type="text">-->
+                    <!--                            </div>-->
+                    <!--                            <input type="submit" class="btn blue accent-3" value="upload">-->
+                    <!--                        </div>-->
+                    <!--                    </form>-->
+
+                </div>
+
+                <div class="col s12 hide-on-small-and-down profile-buttons">
+                    <?php if ($this->model->id != UserModel::currentLoggedInUser()->id) { ?>
+                        <a href="<?= PROOT ?>user/mail/<?= $this->model->id ?>" class="btn blue accent-3">Send
+                            message</a>
+                        <a href="<?= PROOT ?>user/report/<?= $this->model->id ?>" class="btn blue accent-3">Report
+                            user</a>
+                    <?php } ?>
+                </div>
             </div>
         </div>
         <div class="col s12 m8 l8">
@@ -36,18 +55,20 @@
                     <td>Email</td>
                     <td><?= $this->model->email ?></td>
                 </tr>
-                <tr>
-                    <td>Street</td>
-                    <td><?= $this->model->street ?></td>
-                </tr>
-                <tr>
-                    <td>Street Number</td>
-                    <td><?= $this->model->street_nr ?></td>
-                </tr>
-                <tr>
-                    <td>Zipcode</td>
-                    <td><?= $this->model->zipcode ?></td>
-                </tr>
+                <?php if ($this->model->id == UserModel::currentLoggedInUser()->id) { //only when viewing own profile?>
+                    <tr>
+                        <td>Street</td>
+                        <td><?= $this->model->street ?></td>
+                    </tr>
+                    <tr>
+                        <td>Street Number</td>
+                        <td><?= $this->model->street_nr ?></td>
+                    </tr>
+                    <tr>
+                        <td>Zipcode</td>
+                        <td><?= $this->model->zipcode ?></td>
+                    </tr>
+                <?php } ?>
                 <tr>
                     <td>Country</td>
                     <td><?= $this->model->country ?></td>
