@@ -1,0 +1,1 @@
+SELECT * FROM thread_posts WHERE body LIKE ? AND deleted = 0

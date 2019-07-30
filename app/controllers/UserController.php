@@ -263,7 +263,7 @@ class UserController extends Controller
         $db = Database::getInstance();
 
         if ($type == 'received') {
-            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0], "order" => ["date_created", "DESC"]]);
+            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?", "favorite = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0, 0], "order" => ["date_created", "DESC"]]);
             $this->view->messages = $result;
         } else if ($type == 'sent') {
             $result = $db->find("user_messages", ["conditions" => ["sender = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0], "order" => ["date_created", "DESC"]]);
@@ -271,9 +271,70 @@ class UserController extends Controller
         } else if ($type == 'trashcan') {
             $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 1], "order" => ["date_created", "DESC"]]);
             $this->view->messages = $result;
+        } else if ($type == 'favorite') {
+            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?", "favorite = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0, 1], "order" => ["date_created", "DESC"]]);
+            $this->view->messages = $result;
         }
         $this->view->page = $type;
         $this->view->render('user/inbox');
+    }
+
+    public function reputationAction($id = -1)
+    {
+        Log::logAction('User', 'Reputation', $id);
+        $id == -1 || $id == '' ? Router::redirect('error') : "";
+        $this->view->user = new UserModel((int)$id);
+        $this->view->reputations = (new ReputationModel())->getAll($id);
+        $this->view->id = $id;
+        $this->view->render('user/reputation');
+    }
+
+    public function rateAction($id = -1)
+    {
+        Log::logAction('User', 'Rate', $id);
+        $id == -1 || $id == '' ? Router::redirect('error') : "";
+        $id == UserModel::currentLoggedInUser()->id ? Router::redirect('restricted') : "";
+        $this->view = new RateView();
+        $this->view->user = new UserModel((int)$id);
+        $this->view->user->exists() ? "" : Router::redirect('error/user');
+
+
+        $rep = new ReputationModel();
+        $rep = $rep->findByUserId([$id,UserModel::currentLoggedInUser()->id]);
+
+        $this->view->reputation = $rep;
+
+        if ($_POST) {
+            $validation = new Validate();
+            $validation->validate($_POST, [
+                'rating' => [
+                    'display' => 'Rating',
+                    'required' => true
+                ],
+                'comment' => [
+                    'display' => 'Comment',
+                    'max' => 255,
+                    'required' => true
+                ]
+            ]);
+            if ($validation->passed()){
+                if ($rep->exists()){
+                    $model = $rep;
+                }else {
+                    $model = new ReputationModel();
+                }
+                $model->rating = Input::get('rating');
+                $model->comment = Input::get('comment');
+                $model->user_id = $id;
+                $model->given_by = UserModel::currentLoggedInUser()->id;
+                $model->save();
+                Router::redirect('user/reputation/'.$id);
+            }else{
+                $this->view->errors = $validation->displayErrors();
+            }
+        }
+
+        $this->view->render('user/rate');
     }
 
 }

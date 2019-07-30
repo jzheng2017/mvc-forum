@@ -21,6 +21,7 @@ class PostModel extends Model
                     $this->$key = $value;
                 }
                 $this->getUser();
+                $this->getParent();
             }
         }
     }
@@ -35,6 +36,7 @@ class PostModel extends Model
 
     public function getParent(){
         $model = new ThreadModel((int)$this->thread_id);
+        $this->parent = $model;
         return $model;
     }
 

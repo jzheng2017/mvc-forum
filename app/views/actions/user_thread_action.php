@@ -14,26 +14,39 @@ $this->start('body') ?>
             <div class="col s12 m4">
                 <h1><?= ucwords($this->action) . " " . $this->type ?></h1>
                 <table>
-                    <tbody>
-                    <tr>
-                        <td class="bold">Post ID</td>
-                        <td><?= $this->object->id ?></td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Posted by</td>
-                        <td><?= $this->object->user->username ?></td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Content</td>
-                        <td class="scrolling"><?= $this->object->body ?></td>
-                    </tr>
-                    </tbody>
+                    <?php if ($this->type != 'user') { ?>
+                        <tbody>
+                        <tr>
+                            <td class="bold">Post ID</td>
+                            <td><?= $this->object->id ?></td>
+                        </tr>
+                        <tr>
+                            <td class="bold">Posted by</td>
+                            <td><?= $this->object->user->username ?></td>
+                        </tr>
+                        <tr>
+                            <td class="bold">Content</td>
+                            <td class="scrolling"><?= $this->object->body ?></td>
+                        </tr>
+                        </tbody>
+                    <?php } else { ?>
+                        <tbody>
+                        <tr>
+                            <td class="bold">User ID</td>
+                            <td><?= $this->object->id ?></td>
+                        </tr>
+                        <tr>
+                            <td class="bold">Username</td>
+                            <td><?= $this->object->username ?></td>
+                        </tr>
+                        </tbody>
+                    <?php } ?>
                 </table>
             </div>
 
             <div class="col s12 m4 offset-m1">
                 <div class="row">
-                    <h1>Reason for <?= $this->action == 'remove' ? 'removal' : 'report'?></h1>
+                    <h1>Reason for <?= $this->action == 'remove' ? 'removal' : 'report' ?></h1>
                     <?php if (isset($this->model->id)) { ?>
 
                         <div class="card">

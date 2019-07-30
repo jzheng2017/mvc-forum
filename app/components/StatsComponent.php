@@ -5,7 +5,7 @@ class StatsComponent extends Component
 {
     public $user;
     public $post;
-    public function __construct($component)
+    public function __construct($component = 'stats')
     {
         $this->data();
         parent::__construct($component);

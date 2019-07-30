@@ -33,28 +33,66 @@
             <?php } ?>
         <?php } ?>
     </div>
+
     <div class="row">
-        <h2 class="thread-header">Threads</h2>
-        <?php if (UserModel::currentLoggedInUser()){?>
-        <a href="<?=PROOT?>thread/create/<?=$this->category->id?>" class="btn blue accent-3 waves-effect right">New thread</a>
-        <?php }?>
-        <?php if ($this->threads) { ?>
+        <h2 class="thread-header">Important threads</h2>
+        <?php if ($this->threads && Util::hasImportantThreads($this->threads)) { ?>
             <?php foreach ($this->threads as $thread) { ?>
-                <a href="<?= PROOT ?>thread/view/<?= $thread->id ?>" class="black-text">
-                    <div class="col s12 card">
-                        <h5> <?= $thread->title ?> <?= $thread->closed ? '<span class="new red badge">closed</span>' : "" ?></h5>
-                        <div class="row">
-                            <div class="col s4">
-                              <span class="bold">Created by: </span>  <?= $thread->user->username ?> at  <?= $thread->date_created ?>
-                            </div>
-                            <div class="col offset-s4 s4 ">
+                <?php if ($thread->important) { ?>
+                    <a href="<?= PROOT ?>thread/view/<?= $thread->id ?>" class="black-text">
+                        <div class="col s12 card">
+                            <h5> <?= $thread->title ?> <?= $thread->closed ? '<span class="new red badge">closed</span>' : "" ?></h5>
+                            <div class="row">
+                                <div class="col s4">
+                                    <span class="bold">Created by: </span> <?= $thread->user->username ?>
+                                    at <?= $thread->date_created ?>
+                                </div>
+                                <div class="col offset-s4 s4 ">
                                 <span class="right">
-                                    <span class="bold">Latest post by:</span> <?= count($thread->posts) ? end($thread->posts)->user->username . " at " . end($thread->posts)->date_created : "-" ?><span class="bold"> Posts:</span> <?= count($thread->posts)?>
+                                    <span class="bold">Latest post by:</span> <?= count($thread->posts) ? end($thread->posts)->user->username . " at " . end($thread->posts)->date_created : "-" ?><span
+                                            class="bold"> Posts:</span> <?= count($thread->posts) ?>
                                 </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                <?php } ?>
+            <?php } ?>
+        <?php } else { ?>
+            <div class="col s12 card indigo lighten-3">
+                <div class="card-content">
+                    There are no important threads.
+                </div>
+            </div>
+        <?php } ?>
+    </div>
+    <div class="row">
+        <h2 class="thread-header">Threads</h2>
+        <?php if (UserModel::currentLoggedInUser()) { ?>
+            <a href="<?= PROOT ?>thread/create/<?= $this->category->id ?>" class="btn blue accent-3 waves-effect right">New
+                thread</a>
+        <?php } ?>
+        <?php if ($this->threads) { ?>
+            <?php foreach ($this->threads as $thread) { ?>
+                <?php if (!$thread->important) { ?>
+                    <a href="<?= PROOT ?>thread/view/<?= $thread->id ?>" class="black-text">
+                        <div class="col s12 card">
+                            <h5> <?= $thread->title ?> <?= $thread->closed ? '<span class="new red badge">closed</span>' : "" ?></h5>
+                            <div class="row">
+                                <div class="col s4">
+                                    <span class="bold">Created by: </span> <?= $thread->user->username ?>
+                                    at <?= $thread->date_created ?>
+                                </div>
+                                <div class="col offset-s4 s4 ">
+                                <span class="right">
+                                    <span class="bold">Latest post by:</span> <?= count($thread->posts) ? end($thread->posts)->user->username . " at " . end($thread->posts)->date_created : "-" ?><span
+                                            class="bold"> Posts:</span> <?= count($thread->posts) ?>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                <?php } ?>
             <?php } ?>
         <?php } else { ?>
             <div class="col s12 card indigo lighten-3">

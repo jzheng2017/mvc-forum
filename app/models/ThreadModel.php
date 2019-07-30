@@ -12,13 +12,13 @@ class ThreadModel extends Model
         parent::__construct($table);
         $this->model = 'ThreadModel';
         $this->softDelete = true;
-
         $data = [];
         if ($thread != '') {
             if (is_int($thread)) {
                 $data = $this->db->findFirst('threads', ['conditions' => 'id = ?', 'bind' => [$thread]]);
             }
             if ($data) {
+
                 foreach ($data as $key => $value) {
                     $this->$key = $value;
                 }

@@ -1,0 +1,1 @@
+SELECT * FROM threads WHERE title LIKE ? OR body LIKE ? AND deleted = 0

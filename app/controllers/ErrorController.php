@@ -26,4 +26,9 @@ class ErrorController extends Controller
         $this->view->render('error/user_not_found');
     }
 
+    public function existsAction(){
+        Log::logAction('Error', 'Exists', -1);
+        $this->view->render('error/exists');
+    }
+
 }

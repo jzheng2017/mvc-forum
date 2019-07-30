@@ -28,7 +28,7 @@
                     <?php if ($this->model->id != UserModel::currentLoggedInUser()->id) { ?>
                         <a href="<?= PROOT ?>user/mail/<?= $this->model->id ?>" class="btn blue accent-3">Send
                             message</a>
-                        <a href="<?= PROOT ?>user/report/<?= $this->model->id ?>" class="btn blue accent-3">Report
+                        <a href="<?= PROOT ?>action/report/user/<?= $this->model->id ?>" class="btn blue accent-3">Report
                             user</a>
                     <?php } ?>
                 </div>
@@ -84,7 +84,7 @@
                             message</a>
                     </div>
                     <div class="col s6">
-                        <a href="<?= PROOT ?>user/report/<?= $this->model->id ?>" class="btn blue accent-3">Report
+                        <a href="<?= PROOT ?>action/report/user/<?= $this->model->id ?>" class="btn blue accent-3">Report
                             user</a>
                     </div>
                 <?php } ?>

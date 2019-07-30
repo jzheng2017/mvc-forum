@@ -15,8 +15,10 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile", "mail", "message", "inbox"],
+    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate"],
+    "Action" : ["report"],
     "Stats" : ["*"],
+    "Search" : ["*"],
     "Error" : ["*"]
   },
   "Moderator" : {
@@ -24,9 +26,10 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile", "mail", "message", "inbox"],
-    "Action" : ["remove", "report", "close"],
+    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate"],
+    "Action" : ["remove", "report"],
     "Stats" : ["*"],
+    "Search" : ["*"],
     "Error" : ["*"]
   },
   "Staff" : {
@@ -34,9 +37,10 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile", "mail", "message", "inbox"],
+    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate"],
     "Action" : ["remove", "report", "close", "delete"],
     "Stats" : ["*"],
+    "Search" : ["*"],
     "Error" : ["*"]
   },
   "Admin" : {
@@ -44,9 +48,10 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile", "mail", "message", "inbox"],
+    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate"],
     "Action" : ["*"],
     "Stats" : ["*"],
+    "Search" : ["*"],
     "Error" : ["*"]
   }
 }

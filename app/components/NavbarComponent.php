@@ -5,7 +5,7 @@ class NavbarComponent extends Component
 {
     public $inbox;
 
-    public function __construct($component)
+    public function __construct($component = 'navbar')
     {
         UserModel::currentLoggedInUser() ? $this->inbox() : "";
         parent::__construct($component);

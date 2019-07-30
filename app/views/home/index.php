@@ -13,7 +13,7 @@
                 <div class="col s12 card">
                     <h2><?= ucwords($category->name) ?></h2>
                     <div class="row">
-                        <div class="col s12 m1 l1">
+                        <div class="col s12 m1 l1 hide-on-small-and-down">
                             <img class="responsive-img" src="https://dummyimage.com/600x400/000/fff.jpg">
                         </div>
                         <div class="col s12 m1 l11">

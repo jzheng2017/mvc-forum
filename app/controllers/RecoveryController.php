@@ -20,8 +20,10 @@ class RecoveryController extends Controller
                     'required' => true
                 ]
             ]);
+            
             if ($validation->passed()) {
                 $user = Util::getByUsernameEmail(Input::get('identifier'));
+
                 if (!$user) {
                     $validation->addError('Username or email does not exist.');
                     $this->view->errors = $validation->displayErrors();
@@ -80,7 +82,6 @@ class RecoveryController extends Controller
         $this->view = new RecoveryView();
 
         $code == '' ? Router::redirect('recovery/code') : "";
-
 
         $model = new UserCodeModel();
         $model = $model->findByCode($code);

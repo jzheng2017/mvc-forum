@@ -22,7 +22,7 @@ class Util
                 $model = new ThreadModel((int)$object_id);
                 return '<a href="' . PROOT . 'thread/view/' . $model->id . '">Thread |  ' . $model->title . '</a>';
             } else if ($action == 'Create') {
-                return '<a href="' . PROOT . 'category/create">Creating a new thread in </a>';
+                return '<a href="' . PROOT . 'thread/create">Creating a new thread</a>';
             }
         } else if ($controller == 'Category') {
             if ($action == 'View') {
@@ -39,6 +39,9 @@ class Util
                 } else {
                     return '<a href="' . PROOT . 'user/profile">Users own profile</a>';
                 }
+            } else if ($action == 'Inbox') {
+                return '<a href="' . PROOT . 'user/inbox">Inbox</a>';
+
             }
         } else if ($controller == 'Error' || $controller == 'Restricted') {
             return 'Error page';
@@ -82,6 +85,8 @@ class Util
             return $db->findFirst('users', ['conditions' => ['email = ?'], 'bind' => [$input]]);
         } else if ($type == 'username') {
             return $db->findFirst('users', ['conditions' => ['username = ?'], 'bind' => [$input]]);
+        } else if ($type == 'reputation') {
+            return $db->findFirst('user_reputation', ['conditions' => ['user_id = ?'], 'bind' => [$input]]);
         }
     }
 
@@ -98,7 +103,72 @@ class Util
     }
 
     //generate random code
-    public static function generateCode(){
+    public static function generateCode()
+    {
         return base64_encode(md5(rand()));
+    }
+
+    //searches a list of threads if it contains an important thread
+    public static function hasImportantThreads($threads)
+    {
+        $important = false;
+        if ($threads) {
+            foreach ($threads as $thread) {
+                if ($thread->important) {
+                    $important = true;
+                }
+            }
+        } else {
+            return false;
+        }
+        return $important;
+    }
+
+    public static function generateReputationView(array $reputations)
+    {
+        $values = [
+            "positive" => 0,
+            "neutral" => 0,
+            "negative" => 0
+        ];
+
+        foreach ($reputations as $reputation) {
+            if ($reputation->rating > 0) {
+                $values['positive']++;
+            } else if ($reputation->rating == 0) {
+                $values['neutral']++;
+            } else if ($reputation->rating < 0) {
+                $values['negative']++;
+            }
+        }
+
+        $rep = $values['positive'] - $values['negative'];
+        $color = $rep > 0 ? "green-text" : "red-text";
+        $color = $rep == 0 ? "" : $color;
+        $total = count($reputations);
+
+        return "<div class='card col s12 grey lighten-3'>
+                   <div class='card-content'>
+                      <ul>
+                      <li>
+                        Reputation: <span class='$color'>$rep</span>
+                        </li>
+                        <div class='divider grey'></div>
+                        <li>
+                         Positive: $values[positive]            
+                         </li>
+                         <li>
+                         Neutral: $values[neutral]
+                        </li>
+                        <li>
+                        Negative: $values[negative]
+                        </li>
+                        <div class='divider grey'></div>
+                        <li>
+                        Total: $total
+                        </li>
+                      </ul>
+                    </div>
+                </div>";
     }
 }

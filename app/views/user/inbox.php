@@ -6,6 +6,7 @@
             <ul class="collection">
                 <a href="<?=PROOT?>user/inbox">  <li class="collection-item <?= $this->page == 'received' ? "grey-text" : "" ?>">Received</li></a>
                 <a href="<?=PROOT?>user/inbox/sent"><li class="collection-item <?= $this->page == 'sent' ? "grey-text" : "" ?>">Sent</li></a>
+                <a href="<?=PROOT?>user/inbox/favorite"><li class="collection-item <?= $this->page == 'favorite' ? "grey-text" : "" ?>">Favorite</li></a>
                 <a href="<?=PROOT?>user/inbox/trashcan"> <li class="collection-item <?= $this->page == 'trashcan' ? "grey-text" : "" ?>">Trashcan</li></a>
             </ul>
         </div>

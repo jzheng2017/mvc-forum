@@ -43,7 +43,6 @@ class Database
         }
 
         if ($this->query->execute()) {
-
             $this->result = $this->query->fetchAll(PDO::FETCH_OBJ);
             $this->count = $this->query->rowCount();
             $this->lastInsertID = $this->pdo->lastInsertId();
@@ -184,7 +183,6 @@ class Database
     public function findFirst($table, $params = [])
     {
         if ($this->read($table, $params)) {
-
             return $this->first();
         }
         return false;

@@ -15,7 +15,7 @@ class ThreadController extends Controller
         Router::redirect('');
     }
 
-    public function viewAction($id)
+    public function viewAction($id = -1)
     {
         Log::logAction('Thread', 'View', $id);
         $this->load_model('ThreadModel');
@@ -53,27 +53,16 @@ class ThreadController extends Controller
         } else if (isset($_POST['status']) && UserModel::currentLoggedInUser()->permission > 0) { //change thread status to open or closed depending on the current status
             $this->view->thread->closed = !$this->view->thread->closed;
             $this->view->thread->save();
+        } else if (isset($_POST['important']) && UserModel::currentLoggedInUser()->permission > 1) { //change thread status to open or closed depending on the current status
+            $this->view->thread->important = !$this->view->thread->important;
+            $this->view->thread->save();
         }
         $this->view->thread->getUser(); //gets original poster of the thread
         $this->view->thread->getPosts(); //gets all posts from the specific thread
         $this->view->render("thread/thread_detail");
     }
 
-
-//    public function delete($action, $id)
-//    {
-//        Log::logAction('Thread', $action, $id);
-//        if ($_POST && UserModel::currentLoggedInUser()->permission > 1) {
-//            if ($action == 'post') {
-//                $model = new PostModel();
-//                $model->delete($id);
-//            } else if ($action == 'thread') {
-//
-//            }
-//        }
-//    }
-
-    public function createAction($id)
+    public function createAction($id = -1)
     {
         Log::logAction('Thread', 'Create', $id);
         if ($_POST) {
@@ -112,5 +101,53 @@ class ThreadController extends Controller
         $this->view->categories = $categories->getAll();
         $this->view->id = $id;
         $this->view->render('thread/create_thread');
+    }
+
+    public function editAction($thread = -1, $post = -1)
+    {
+
+       if ($thread == -1){
+           Log::logAction('Thread', 'Edit', $thread);
+           Router::redirect('error');
+       }
+
+        $model = $thread > -1 && ($post == -1 || $post == '')? new ThreadModel((int)$thread) : new PostModel((int)$post);
+
+        if ($model->exists() && $model->deleted == 0) {
+            if ($model instanceof ThreadModel){
+                Log::logAction('Thread', 'Edit', $thread);
+                !($model->created_by == UserModel::currentLoggedInUser()->id) ? Router::redirect('error') : "";
+
+            } else if ($model instanceof PostModel){
+
+                Log::logAction('Post','Edit', $post);
+                !($model->user_id == UserModel::currentLoggedInUser()->id) ? Router::redirect('error') : "";
+            }
+
+            if ($_POST){
+                $validation = new Validate();
+                $validation->validate($_POST,[
+                   'body' => [
+                       'display' => 'Content',
+                       'min' => 69,
+                       'max' => 2800,
+                       'required' => true
+                   ]
+                ]);
+
+                if ($validation->passed()){
+                    $model->body = Input::get('body');
+                    $model->save();
+                    Router::redirect('thread/view/'.$thread);
+                }else{
+                    $this->view->errors = $validation->displayErrors();
+                }
+            }
+        } else {
+            Router::redirect('error');
+        }
+
+        $this->view->model = $model;
+        $this->view->render('thread/edit');
     }
 }

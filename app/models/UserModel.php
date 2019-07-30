@@ -103,10 +103,31 @@ class UserModel extends Model
         $this->save();
     }
 
-    public function getUserInfo($id){
-
+    public function getUserInfo($id)
+    {
         $user = $this->db->query(Query::get('get_user_info'), [$id])->first();
         $this->populate($user);
+    }
+
+    public function getStatus()
+    {
+        $status = $this->db->query(Query::get('user_status'), [$this->id])->result();
+        if ($status) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getAll(){
+        $users = $this->db->query(Query::get('get_users'))->result();
+        $models = [];
+        foreach ($users as $user){
+            $model = new self();
+            $model->populate($user);
+            $models[] = $model;
+        }
+        return $models;
     }
 
 }

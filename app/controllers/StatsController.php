@@ -26,4 +26,12 @@ class StatsController extends Controller
         $this->view->posts = $db->query(Query::get('post_stats'))->result();
         $this->view->render('stats/posts');
     }
+
+    public function usersAction(){
+        Log::logAction('Statistics', 'Users', -1);
+        $db = Database::getInstance();
+        $user = new UserModel();
+        $this->view->users = $user->getAll();
+        $this->view->render('stats/user_list');
+    }
 }

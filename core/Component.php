@@ -4,6 +4,7 @@
 class Component
 {
     public $body;
+    public $style;
 
     public function __construct($component)
     {

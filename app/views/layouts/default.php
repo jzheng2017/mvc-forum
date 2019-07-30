@@ -22,7 +22,8 @@
 </head>
 <body>
 <header>
-    <?= View::renderComponent(new NavbarComponent('navbar'))?>
+    <?= View::renderComponent(new NavbarComponent())?>
+    <?= View::renderComponent(new MenuComponent())?>
 </header>
 <main><?= $this->content('body'); ?></main>
 <footer class="page-footer indigo darken-3">
@@ -40,7 +41,7 @@
             </div>
             <div class="col s12 m4 l3">
                 <h5 class="white-text">Site statistics</h5>
-                <?= $this->renderComponent(new StatsComponent('stats'))?>
+                <?= $this->renderComponent(new StatsComponent())?>
             </div>
         </div>
     </div>
