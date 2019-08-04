@@ -1,0 +1,1 @@
+SELECT u.id, u.username, up.points  FROM users u, user_points up, user_ranks ur WHERE u.id = up.user_id AND u.rank = ur.rank AND u.rank = ? ORDER BY up.points DESC

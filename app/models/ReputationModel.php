@@ -14,7 +14,7 @@ class ReputationModel extends Model
         $data = [];
         if ($id != '') {
             if (is_int($id)) {
-                $data = $this->db->findFirst('user_reputation', ['conditions' => 'id = ?', 'bind' => [$id]]);
+                $data = $this->db->findFirst($this->table, ['conditions' => 'id = ?', 'bind' => [$id]]);
             }
             if ($data) {
                 foreach ($data as $key => $value) {

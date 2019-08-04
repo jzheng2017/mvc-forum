@@ -14,7 +14,7 @@ class PostModel extends Model
         $data = [];
         if ($post != '') {
             if (is_int($post)) {
-                $data = $this->db->findFirst('thread_posts', ['conditions' => 'id = ?', 'bind' => [$post]]);
+                $data = $this->db->findFirst($this->table, ['conditions' => 'id = ?', 'bind' => [$post]]);
             }
             if ($data) {
                 foreach ($data as $key => $value) {
@@ -40,4 +40,17 @@ class PostModel extends Model
         return $model;
     }
 
+    public function getAllByUser($id){
+        $posts = $this->db->query(Query::get('get_user_posts'), [$id])->result();
+        $models = [];
+        if ($posts){
+            foreach ($posts as $post){
+                $model = new PostModel();
+                $model->populate($post);
+                $models[] = $model;
+            }
+        }
+
+        return $models;
+    }
 }

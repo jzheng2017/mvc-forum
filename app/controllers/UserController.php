@@ -53,27 +53,6 @@ class UserController extends Controller
                     'required' => true,
                     'matches' => 'email'
                 ],
-                'first_name' => [
-                    'display' => 'First name',
-                    'required' => true
-                ],
-                'last_name' => [
-                    'display' => 'Lat name',
-                    'required' => true
-                ],
-                'street' => [
-                    'display' => 'Street',
-                    'required' => true
-                ],
-                'street_nr' => [
-                    'display' => 'Street number',
-                    'required' => true,
-                    'is_numeric' => true
-                ],
-                'zipcode' => [
-                    'display' => 'Zipcode',
-                    'required' => true
-                ],
                 'country' => [
                     'display' => 'Country',
                     'required' => true
@@ -148,24 +127,12 @@ class UserController extends Controller
     public function profileAction($id = -1)
     {
         Log::logAction('User', 'Profile', $id);
-
-        if (($id == -1 || $id == '') && UserModel::currentLoggedInUser()) {
-            $model = new UserModel((int)UserModel::currentLoggedInUser()->id);
-            if ($model->exists()) {
-                $this->view->model = $model;
-            } else {
-                Router::redirect('error');
-            }
-        } else if ($id > -1) {
-
-            $model = new UserModel((int)$id);
-            if ($model->exists()) {
-                $this->view->model = $model;
-            } else {
-                Router::redirect('error');
-            }
-        } else {
-            Router::redirect('error');
+        $id = $id == '' ? $id = -1 : $id; //force '' to -1
+        $id = $id == -1 ? UserModel::currentLoggedInUser()->id : $id;
+        $model = new UserModel((int)$id);
+        if ($model->exists()){
+            $model->getUserInfo($model->id);
+            $this->view->model = $model;
         }
         $this->view->render('user/profile');
     }
@@ -337,4 +304,23 @@ class UserController extends Controller
         $this->view->render('user/rate');
     }
 
+    public function postsAction($id = -1){
+        Log::logAction('User', 'Posts', $id);
+        $user = new UserModel((int)$id);
+        $user->exists() ? "" : Router::redirect('error/user');
+        $this->view->user = $user;
+        $posts = new PostModel();
+        $this->view->posts = $posts->getAllByUser($user->id);
+        $this->view->render('user/posts');
+    }
+
+    public function pointsAction($id = -1){
+        Log::logAction('User', 'Points', $id);
+        $points = new UserPointsModel((int)$id);
+        $points->exists() ? "" : Router::redirect('errors');
+        $this->view->points = $points;
+
+        $this->view->logs = $points->getLog();
+        $this->view->render('user/logs');
+    }
 }

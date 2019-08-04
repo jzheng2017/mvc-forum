@@ -65,6 +65,7 @@
                                     class="<?= $this->thread->user->reputation > 0 ? "green-text" : ($this->thread->user->reputation == 0 ? "" : "red-text") ?>"><?= $this->thread->user->reputation ?></a>
                         </li>
                         <li>Permission: <?= ucwords($this->thread->user->role) ?></li>
+                        <li>Rank: <?= ucwords($this->thread->user->rank_title) ?></li>
                         <li>Posts: <?= $this->thread->user->post_count ?></li>
                         <li>
                             Status: <?= $this->thread->user->status ? '<span class="bold">Online</span>' : "Offline" ?></li>
@@ -91,7 +92,7 @@
         <?php if ($this->thread->posts) {
             $index = 1; ?>
             <?php foreach ($this->thread->posts as $post) { ?>
-                <div class="col s12 card">
+                <div class="col s12 card" id="<?=$post->id?>">
                     <div class="s12 center"><h5>Post #<?= $index ?></h5> <span
                                 class="right"><?= $post->date_created ?></span></div>
                     <div class="divider"></div>
@@ -110,6 +111,7 @@
                                                     class="<?= $post->user->reputation > 0 ? "green-text" : ($post->user->reputation == 0 ? "" : "red-text") ?>"><?= $post->user->reputation ?></a>
                                         </li>
                                         <li>Permission: <?= ucwords($post->user->role) ?></li>
+                                        <li>Rank: <?= ucwords($post->user->rank_title) ?></li>
                                         <li>Posts: <?= $post->user->post_count ?></li>
                                         <li>
                                             Status: <?= $post->user->status ? '<span class="bold">Online</span>' : 'Offline' ?></li>

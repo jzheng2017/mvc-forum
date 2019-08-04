@@ -44,34 +44,35 @@
                     <td><?= $this->model->username ?></td>
                 </tr>
                 <tr>
-                    <td>First name</td>
-                    <td><?= $this->model->first_name ?></td>
-                </tr>
-                <tr>
-                    <td>Last name</td>
-                    <td><?= $this->model->last_name ?></td>
-                </tr>
-                <tr>
                     <td>Email</td>
                     <td><?= $this->model->email ?></td>
                 </tr>
-                <?php if ($this->model->id == UserModel::currentLoggedInUser()->id) { //only when viewing own profile?>
-                    <tr>
-                        <td>Street</td>
-                        <td><?= $this->model->street ?></td>
-                    </tr>
-                    <tr>
-                        <td>Street Number</td>
-                        <td><?= $this->model->street_nr ?></td>
-                    </tr>
-                    <tr>
-                        <td>Zipcode</td>
-                        <td><?= $this->model->zipcode ?></td>
-                    </tr>
-                <?php } ?>
                 <tr>
                     <td>Country</td>
-                    <td><?= $this->model->country ?></td>
+                    <?php $this->model->getCountry() ?>
+                    <td><?= isset($this->model->country->country_name) ? $this->model->country->country_name : "Unknown" ?></td>
+                </tr>
+                <tr>
+                    <td>Reputation</td>
+                    <td><a href="<?= PROOT ?>user/reputation/<?= $this->model->id ?>"
+                           class="<?= $this->model->reputation > 0 ? "green-text" : ($this->model->reputation == 0 ? "" : "red-text") ?>"><?= $this->model->reputation ?></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Posts</td>
+                    <td><a href="<?=PROOT?>user/posts/<?=$this->model->id?>"><?=$this->model->post_count?></a></td>
+                </tr>
+                <tr>
+                    <td>Permission</td>
+                    <td><?=ucfirst($this->model->role)?></td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td><?= $this->model->status ? '<span class="bold">Online</span>' : "Offline" ?></td>
+                </tr>
+                <tr>
+                    <td>Rank</td>
+                    <td><a href="<?=PROOT?>ranks"><?=$this->model->rank_title?></a></td>
                 </tr>
                 </tbody>
             </table>

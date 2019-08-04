@@ -14,7 +14,7 @@
                                 <h5>Post</h5>
                                 <div class="divider"></div>
                                 <p><?= $post->body ?></p>
-                                <a href="<?= PROOT ?>thread/view/<?= $post->thread_id ?>" class="btn blue accent-3">View thread</a>
+                                <a href="<?= PROOT ?>thread/view/<?= $post->thread_id ?>#<?=$post->id?>" class="btn blue accent-3">View post</a>
                             </div>
                         </li>
                     <?php } ?>

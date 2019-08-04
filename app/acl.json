@@ -8,6 +8,8 @@
     "Recovery" : ["*"],
     "Restricted" : ["*"],
     "Stats" : ["*"],
+    "Search" : ["*"],
+    "Ranks" : ["index"],
     "Error" : ["*"]
   },
   "User" : {
@@ -15,10 +17,12 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate"],
+    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate", "posts"],
     "Action" : ["report"],
     "Stats" : ["*"],
     "Search" : ["*"],
+    "Ranks" : ["*"],
+    "Games" : ["*"],
     "Error" : ["*"]
   },
   "Moderator" : {
@@ -26,10 +30,12 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate"],
+    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate", "posts"],
     "Action" : ["remove", "report"],
     "Stats" : ["*"],
     "Search" : ["*"],
+    "Ranks" : ["*"],
+    "Games" : ["*"],
     "Error" : ["*"]
   },
   "Staff" : {
@@ -37,10 +43,12 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate"],
+    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate", "posts"],
     "Action" : ["remove", "report", "close", "delete"],
     "Stats" : ["*"],
     "Search" : ["*"],
+    "Ranks" : ["*"],
+    "Games" : ["*"],
     "Error" : ["*"]
   },
   "Admin" : {
@@ -48,10 +56,12 @@
     "Index" : ["*"],
     "Category" : ["*"],
     "Thread" : ["*"],
-    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate"],
+    "User" : ["logout", "profile", "mail", "message", "inbox", "reputation", "rate", "posts"],
     "Action" : ["*"],
     "Stats" : ["*"],
     "Search" : ["*"],
+    "Ranks" : ["*"],
+    "Games" : ["*"],
     "Error" : ["*"]
   }
 }

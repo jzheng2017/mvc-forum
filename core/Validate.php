@@ -72,6 +72,14 @@ class Validate
                                 $this->addError(["{$display} must have atleast 1 uppercase character.", $item]);
                             }
                             break;
+                        case 'not_greater':
+                            $value = (int)$value;
+                            $source[$rule_value] = (int)$source[$rule_value];
+                        //   debug($items);
+                            if ($value > $source[$rule_value]) {
+                                $matchDisplay = $items[$rule_value]['display'];
+                                $this->addError(["{$display} can not be greater than {$matchDisplay}.", $item]);
+                            }
                     }
                 }
             }

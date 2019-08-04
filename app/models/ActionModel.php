@@ -14,7 +14,7 @@ class ActionModel extends Model
         $data = [];
         if ($id != '') {
             if (is_int($id)) {
-                $data = $this->db->findFirst('categories', ['conditions' => 'id = ?', 'bind' => [$id]]);
+                $data = $this->db->findFirst($this->table, ['conditions' => 'id = ?', 'bind' => [$id]]);
             }
             if ($data) {
                 foreach ($data as $key => $value) {

@@ -1,22 +1,20 @@
 <?php
 
 
-class CountryModel extends Model
+class GameModel extends Model
 {
-    public  $countries = [];
-
     public function __construct($id = '')
     {
-        $table = 'countries';
+        $table = 'games';
         parent::__construct($table);
-        $this->model = 'CountryModel';
+        $this->model = 'GameModel';
 
         $data = [];
         if ($id != '') {
             if (is_int($id)) {
                 $data = $this->db->findFirst($this->table, ['conditions' => 'id = ?', 'bind' => [$id]]);
             } else {
-                $data = $this->db->findFirst($this->table, ['conditions' => 'country_code = ?', 'bind' => [$id]]);
+                $data = $this->db->findFirst($this->table, ['conditions' => 'link = ?', 'bind' => [$id]]);
             }
             if ($data) {
                 foreach ($data as $key => $value) {
@@ -28,13 +26,16 @@ class CountryModel extends Model
 
     public function getAll()
     {
-        $result = $this->find();
+        $result = $this->db->find($this->table, ['conditions' => ['deleted = ?'], 'bind' => [0], 'order' => ['name', 'ASC']]);
 
-        foreach ($result as $country) {
-            $model = new CountryModel();
-            $model->populate($country);
-            $this->countries[] = $model;
+        $games = [];
+
+        foreach ($result as $game){
+            $model = new self();
+            $model->populate($game);
+            $games[] = $model;
         }
+        return $games;
     }
 
 }

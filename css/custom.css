@@ -39,3 +39,7 @@ input[type=submit] {
     width:5px;
     background: red;
 }
+
+.margin-bottom-zero{
+    margin-bottom:0px !important;
+}

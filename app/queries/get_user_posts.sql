@@ -1,0 +1,1 @@
+SELECT * FROM thread_posts WHERE user_id = ? ORDER BY date_created DESC

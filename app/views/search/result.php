@@ -16,21 +16,21 @@
                                 <li>Verified user: <?= $result->verified ? "Yes" : "No" ?></li>
                             </ul>
                         <?php } else if ($this->type == 'thread') { ?>
-                            <?php $result->title = str_replace(Input::get('query'), "<span class='yellow'>".Input::get('query')."</span>",$result->title)?>
+                            <?php $result->title = Util::highlight($result->title, Input::get('query'))?>
                             <span class="card-title"><a
                                         href="<?= PROOT ?>thread/view/<?= $result->id ?>"><?= $result->title ?></a></span>
                             <ul>
-                                <?php $result->body = str_replace(Input::get('query'), "<span class='yellow'>".Input::get('query')."</span>",$result->body)?>
+                                <?php $result->body = Util::highlight($result->body, Input::get('query'))?>
                                 <li><?=$result->body?></li>
                                 <div class="divider"></div>
                                 <li>Date created: <?= $result->date_created ?></li>
                             </ul>
                         <?php } else if ($this->type == 'post'){?>
                             <?php $thread = new ThreadModel((int)$result->thread_id)?>
-                            <?php $thread->title = str_replace(Input::get('query'), "<span class='yellow'>".Input::get('query')."</span>",$thread->title)?>
-                            <span class="card-title"><a href="<?=PROOT?>thread/view/<?=$thread->id?>"><?=$thread->title?></a></span>
+                            <?php $thread->title = Util::highlight($thread->title, Input::get('query'))?>
+                            <span class="card-title"><a href="<?=PROOT?>thread/view/<?=$thread->id?>#<?=$result->id?>"><?=$thread->title?></a></span>
                             <ul>
-                                <?php $result->body = str_replace(Input::get('query'), "<span class='yellow'>".Input::get('query')."</span>",$result->body)?>
+                                <?php $result->body = Util::highlight($result->body, Input::get('query'))?>
                                 <li><?=$result->body?></li>
                                 <div class="divider"></div>
                                 <li>Date posted: <?= $result->date_created ?></li>

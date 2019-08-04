@@ -33,27 +33,7 @@
                         <input type="email" id="confirm_email" name="confirm_email" value="<?= isset($this->fields['confirm_email']) ? $this->fields['confirm_email'] : "" ?>" required>
                         <label for="confirm_email">Confirm email</label>
                     </div>
-                    <div class="input-field col s12 m6">
-                        <input type="text" id="first_name" name="first_name" value="<?= isset($this->fields['first_name']) ? $this->fields['first_name'] : "" ?>" required>
-                        <label for="first_name">First name</label>
-                    </div>
-                    <div class="input-field col s12 m6">
-                        <input type="text" id="last_name" name="last_name" value="<?= isset($this->fields['last_name']) ? $this->fields['last_name'] : "" ?>" required>
-                        <label for="last_name">Last name</label>
-                    </div>
-                    <div class="input-field col s12 m6">
-                        <input type="text" id="street" name="street" value="<?= isset($this->fields['street']) ? $this->fields['street'] : "" ?>" required>
-                        <label for="street">Street</label>
-                    </div>
-                    <div class="input-field col s12 m6">
-                        <input type="number" id="street_nr" name="street_nr" min="0" value="<?= isset($this->fields['street_nr']) ? $this->fields['street_nr'] : "" ?>" required>
-                        <label for="street_nr">Street number</label>
-                    </div>
-                    <div class="input-field col s12 m6">
-                        <input type="text" id="zipcode" name="zipcode" value="<?= isset($this->fields['zipcode']) ? $this->fields['zipcode'] : "" ?>" required>
-                        <label for="zipcode">Zipcode</label>
-                    </div>
-                    <div class="input-field col s12 m6">
+                    <div class="input-field col s12">
                         <select name="country" id="country" required>
                             <option value="" disabled selected>Select a country</option>
                             <?php foreach ($this->countries as $country){?>

@@ -1,4 +1,4 @@
-SELECT t.title, tp.body, tp.thread_id, u.username
+SELECT t.title, tp.*, u.username
 FROM thread_posts tp, threads t, users u
 WHERE tp.thread_id = t.id
 AND u.id = tp.user_id

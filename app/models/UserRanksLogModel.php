@@ -1,18 +1,13 @@
 <?php
 
 
-class UserCodeModel extends Model
+class UserRanksLogModel extends Model
 {
-
-    public $user;
-
     public function __construct($id = '')
     {
-        $table = 'user_codes';
+        $table = 'user_ranks_log';
         parent::__construct($table);
-        $this->model = 'UserCodeModel';
-        $this->softDelete = false;
-
+        $this->model = 'UserRanksLogModel';
         $data = [];
         if ($id != '') {
             if (is_int($id)) {
@@ -26,15 +21,4 @@ class UserCodeModel extends Model
         }
     }
 
-    public function findByCode($code)
-    {
-        return $this->findFirst(['conditions' => ['code = ?'], 'bind' => [$code]]);
-    }
-
-    public function getUser()
-    {
-        $model = new UserModel((int)$this->user_id);
-        $this->user = $model;
-        return $this->user;
-    }
 }

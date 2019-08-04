@@ -16,7 +16,7 @@ class UserMessageModel extends Model
         $data = [];
         if ($message != '') {
             if (is_int($message)) {
-                $data = $this->db->findFirst('user_messages', ['conditions' => 'id = ?', 'bind' => [$message]]);
+                $data = $this->db->findFirst($this->table, ['conditions' => 'id = ?', 'bind' => [$message]]);
             }
             if ($data) {
                 foreach ($data as $key => $value) {

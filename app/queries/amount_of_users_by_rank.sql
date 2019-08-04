@@ -1,0 +1,1 @@
+SELECT COUNT(*) as amount FROM users u, user_ranks ur WHERE u.rank = ur.rank and ur.rank = ?

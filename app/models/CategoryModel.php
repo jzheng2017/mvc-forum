@@ -13,7 +13,7 @@ class CategoryModel extends Model
         $data = [];
         if ($category != '') {
             if (is_int($category)) {
-                $data = $this->db->findFirst('categories', ['conditions' => 'id = ?', 'bind' => [$category]]);
+                $data = $this->db->findFirst($this->table, ['conditions' => 'id = ?', 'bind' => [$category]]);
             }
             if ($data) {
                 foreach ($data as $key => $value) {

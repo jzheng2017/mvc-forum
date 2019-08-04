@@ -41,7 +41,19 @@ class Util
                 }
             } else if ($action == 'Inbox') {
                 return '<a href="' . PROOT . 'user/inbox">Inbox</a>';
-
+            } else if ($action == 'Reputation') {
+                $model = new ReputationModel((int)$object_id);
+                return '<a href="' . PROOT . 'user/reputation/' . $model->id . '">' . $model->user->username . '\'s reputation</a>';
+            } else if ($action == 'Rate') {
+                return 'Rating a user';
+            }
+        } else if ($controller == 'Search') {
+            if ($action == 'Index') {
+                return 'Searching';
+            }
+        } else if ($controller == 'Games') {
+            if ($action == 'Index') {
+                return '<a href="' . PROOT . 'games">' . 'Game list</a>';
             }
         } else if ($controller == 'Error' || $controller == 'Restricted') {
             return 'Error page';
@@ -71,6 +83,13 @@ class Util
                 $result = $db->findFirst('user_messages', ['conditions' => ['sender = ?', 'id = ?'], 'bind' => [UserModel::currentLoggedInUser()->id, $id], 'order' => ['date_created', 'DESC']]);
             } else {
                 $result = $db->findFirst('user_messages', ['conditions' => ['sender = ?'], 'bind' => [UserModel::currentLoggedInUser()->id], 'order' => ['date_created', 'DESC']]);
+            }
+            return $result;
+        } else if ($type == 'action') {
+            if ($id != '') {
+                $result = $db->findFirst('user_actions', ['conditions' => ['user_id = ?'], 'bind' => [$id], 'order' => ['date_created', 'DESC']]);
+            } else {
+                $result = $db->findFirst('user_actions', ['conditions' => ['user_id = ?'], 'bind' => [UserModel::currentLoggedInUser()->id], 'order' => ['date_created', 'DESC']]);
             }
             return $result;
         }
@@ -171,4 +190,26 @@ class Util
                     </div>
                 </div>";
     }
+
+
+    public static function highlight($text, $words)
+    {
+        preg_match_all('~\w+~', $words, $m);
+        if (!$m)
+            return $text;
+        $re = '~(' . implode('|', $m[0]) . ')~i';
+        return preg_replace($re, '<span class="yellow">$0</span>', $text);
+    }
+
+    public static function message($message, $class = '')
+    {
+        return "<div class='card $class'>
+                    <div class='card-content'>
+                    <p>
+                    $message
+                    </p>
+                    </div>
+                </div>";
+    }
+
 }

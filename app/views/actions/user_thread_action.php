@@ -46,7 +46,7 @@ $this->start('body') ?>
 
             <div class="col s12 m4 offset-m1">
                 <div class="row">
-                    <h1>Reason for <?= $this->action == 'remove' ? 'removal' : 'report' ?></h1>
+                    <h1>Reason</h1>
                     <?php if (isset($this->model->id)) { ?>
 
                         <div class="card">

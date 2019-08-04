@@ -15,7 +15,7 @@ class ThreadModel extends Model
         $data = [];
         if ($thread != '') {
             if (is_int($thread)) {
-                $data = $this->db->findFirst('threads', ['conditions' => 'id = ?', 'bind' => [$thread]]);
+                $data = $this->db->findFirst($this->table, ['conditions' => 'id = ?', 'bind' => [$thread]]);
             }
             if ($data) {
 

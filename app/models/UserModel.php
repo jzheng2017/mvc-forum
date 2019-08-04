@@ -21,9 +21,9 @@ class UserModel extends Model
 
         if ($user != '') {
             if (is_int($user)) {
-                $data = $this->db->findFirst('users', ['conditions' => 'id = ?', 'bind' => [$user]]);
+                $data = $this->db->findFirst($this->table, ['conditions' => 'id = ?', 'bind' => [$user]]);
             } else {
-                $data = $this->db->findFirst('users', ['conditions' => 'username = ?', 'bind' => [$user]]);
+                $data = $this->db->findFirst($this->table, ['conditions' => 'username = ?', 'bind' => [$user]]);
             }
             if ($data) {
                 foreach ($data as $key => $value) {
@@ -100,7 +100,9 @@ class UserModel extends Model
         unset($result['confirm_password']);
         $result['password'] = password_hash($result['password'], PASSWORD_DEFAULT);
         $this->populate($result);
-        $this->save();
+        if ($this->save()) {
+            UserPointsModel::create($this->db->lastId());
+        }
     }
 
     public function getUserInfo($id)
@@ -119,15 +121,46 @@ class UserModel extends Model
         }
     }
 
-    public function getAll(){
+    public function getAll($additional = false)
+    {
         $users = $this->db->query(Query::get('get_users'))->result();
         $models = [];
-        foreach ($users as $user){
+        foreach ($users as $user) {
             $model = new self();
             $model->populate($user);
+            if ($additional) $model->getUserInfo($model->id); //get aditional data
             $models[] = $model;
         }
         return $models;
     }
 
+
+    public function getCountry()
+    {
+        $country = new CountryModel($this->country);
+        $this->country = $country;
+        return $country;
+    }
+
+    public function getUsersByRank($rank)
+    {
+        $users = $this->db->query(Query::get('get_users_by_rank'), [$rank])->result();
+
+        $models = [];
+        if ($users) {
+            foreach ($users as $user) {
+                $model = new UserModel();
+                $model->populate($user);
+                $models[] = $model;
+            }
+        }
+        return $models;
+    }
+
+    public function getPoints()
+    {
+        $model = new UserPointsModel((int)$this->id);
+        $this->points = $model;
+        return $model;
+    }
 }
