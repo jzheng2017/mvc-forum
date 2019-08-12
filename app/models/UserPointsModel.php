@@ -22,12 +22,13 @@ class UserPointsModel extends Model
         }
     }
 
-    public function getLog(){
-        $logs = $this->db->find($this->table,['conditions' => ['user_id = ?'], 'bind' => [$this->user_id], 'order' => ['date_created', 'DESC']]);
+    public function getLog()
+    {
+        $logs = $this->db->find($this->table, ['conditions' => ['user_id = ?'], 'bind' => [$this->user_id], 'order' => ['date_created', 'DESC']]);
 
         $models = [];
-        if ($logs){
-            foreach($logs as $log){
+        if ($logs) {
+            foreach ($logs as $log) {
                 $model = new UserPointsLogModel();
                 $model->populate($log);
                 $models[] = $model;
@@ -36,10 +37,23 @@ class UserPointsModel extends Model
         return $models;
     }
 
-    public static function create($id){
+    public static function create($id)
+    {
         $model = new self();
         $model->points = 0;
         $model->user_id = $id;
         return $model->save();
+    }
+
+    public function assignPoints($points, $data = '')
+    {
+        $this->points += $points;
+        if ($this->save()) {
+            $log = new UserPointsLogModel();
+            $log->points = $points;
+            $log->points_id = $this->id;
+            $log->data = $data;
+            $log->save();
+        }
     }
 }

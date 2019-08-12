@@ -1,0 +1,1 @@
+UPDATE threads SET last_updated = now() WHERE id = ?

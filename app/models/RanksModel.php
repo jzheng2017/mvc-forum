@@ -3,6 +3,8 @@
 
 class RanksModel extends Model
 {
+    public $rank = NULL;
+
     public function __construct($id = '')
     {
         $table = 'user_ranks';

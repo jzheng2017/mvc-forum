@@ -101,6 +101,31 @@
                 </div>
             </div>
         <?php } ?>
+        <?php if ($this->threads){?>
+        <ul class="pagination right">
+            <li <?=$this->currentPage == 1 ? 'class="disabled" onclick="return false"' : "" ?>"><a href="<?=PROOT?>category/view/<?=$this->category->id?>/<?=$this->currentPage-1?>"><i class="material-icons">chevron_left</i></a></li>
+            <li class="<?= $this->currentPage == 1 ? "active" : "" ?>"><a href="<?= PROOT ?>category/view/<?=$this->category->id?>/1">1</a></li>
+            <?php if ($this->currentPage > 3){ ?>
+                <li class="dots">...</li>
+            <?php } ?>
+            <?php if ($this->currentPage-1>1){?>
+                <li class="waves-effect "><a href="<?=PROOT?>category/view/<?=$this->category->id?>/<?=$this->currentPage-1?>"><?=$this->currentPage-1?></a></li>
+            <?php }?>
+            <?php if ($this->currentPage != 1 && $this->currentPage != $this->maxPage){?>
+                <li class="waves-effect active"><a href="<?=PROOT?>category/view/<?=$this->category->id?>/<?=$this->currentPage?>"><?=$this->currentPage?></a></li>
+            <?php }?>
+            <?php if ($this->currentPage+1 < $this->maxPage){?>
+                <li class="waves-effect"><a href="<?=PROOT?>category/view/<?=$this->category->id?>/<?=$this->currentPage+1?>"><?=$this->currentPage+1?></a></li>
+            <?php }?>
+            <?php if ($this->maxPage - $this->currentPage > 2) { ?>
+                <li class="dots">...</li>
+            <?php } ?>
+            <?php if ($this->maxPage != 1){?>
+                <li class="waves-effect <?= $this->maxPage == $this->currentPage ? "active" : ""?>"><a href="<?=PROOT?>category/view/<?=$this->category->id?>/<?=$this->maxPage?>"><?=$this->maxPage?></a></li>
+            <?php }?>
+            <li  <?=$this->currentPage == $this->maxPage ? 'class="disabled" onclick="return false"' : "" ?>><a href="<?=PROOT?>category/view/<?=$this->category->id?>/<?=$this->currentPage+1?>"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+        <?php }?>
     </div>
 </div>
 <?php $this->end(); ?>

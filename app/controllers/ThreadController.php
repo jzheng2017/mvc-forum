@@ -38,7 +38,10 @@ class ThreadController extends Controller
                     $post->body = Input::get('body');
                     $post->user_id = UserModel::currentLoggedInUser()->id;
                     $post->thread_id = $id;
-                    $post->save();
+                    if ($post->save()){
+                        $db = Database::getInstance();
+                        $db->query(Query::get('update_thread'), [$id]); //on update CURRENT_TIMESTAMP doesn't work so (doesn't work on DATETIME fields?), I'm forcing it by executing an extra query
+                    }
                     Router::redirect('thread/view/' . $id);
                 } else {
                     $this->view->errors = $validation->displayErrors();

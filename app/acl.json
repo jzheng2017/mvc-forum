@@ -9,7 +9,8 @@
     "Restricted" : ["*"],
     "Stats" : ["*"],
     "Search" : ["*"],
-    "Ranks" : ["index"],
+    "Ranks" : ["*"],
+    "Games" : ["index"],
     "Error" : ["*"]
   },
   "User" : {

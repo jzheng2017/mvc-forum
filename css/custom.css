@@ -43,3 +43,7 @@ input[type=submit] {
 .margin-bottom-zero{
     margin-bottom:0px !important;
 }
+
+.dots{
+    margin-top:5px;
+}

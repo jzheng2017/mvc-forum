@@ -24,6 +24,7 @@ class UserMessageModel extends Model
                 }
 
                 $this->senderModel = new UserModel((int)$this->sender);
+                $this->recipientModel = new UserModel((int)$this->recipient);
             }
 
         }

@@ -1,1 +1,1 @@
-SELECT COUNT(*) as amount FROM users u, user_ranks ur WHERE u.rank = ur.rank and ur.rank = ?
+SELECT COUNT(*) as amount FROM users u, user_ranks ur, user_points up WHERE u.rank = ur.rank AND u.id = up.user_id AND ur.rank = ?

@@ -24,7 +24,7 @@ class RanksController extends Controller
 
     public function listAction($id = '')
     {
-        Log::logAction('Ranks', 'List', -1);
+        Log::logAction('Ranks', 'List', $id);
 
         $this->view = new RanksView();
         if ($id == '') {

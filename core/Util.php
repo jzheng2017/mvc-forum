@@ -55,6 +55,19 @@ class Util
             if ($action == 'Index') {
                 return '<a href="' . PROOT . 'games">' . 'Game list</a>';
             }
+        } else if($controller == 'Ranks') {
+            if ($action == 'Index'){
+                return '<a href="'.PROOT.'ranks">Ranking</a>';
+            } else if ($action == 'List'){
+                $model = new RanksModel((int)$object_id);
+
+                if ($model->exists()){
+                    return '<a href="'.PROOT.'ranks/list/'.$object_id.'">'.$model->title.' ranking list</a>';
+                }else {
+                    return '<a href="' . PROOT . 'ranks/list">Ranking list</a>';
+                }
+            }
+
         } else if ($controller == 'Error' || $controller == 'Restricted') {
             return 'Error page';
         }

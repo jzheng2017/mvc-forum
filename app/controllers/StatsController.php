@@ -27,11 +27,29 @@ class StatsController extends Controller
         $this->view->render('stats/posts');
     }
 
-    public function usersAction(){
-        Log::logAction('Statistics', 'Users', -1);
+    public function usersAction($page = 1){
+        Log::logAction('Statistics', 'Users', $page);
         $db = Database::getInstance();
+
+        $limit = 10; //items per page
         $user = new UserModel();
-        $this->view->users = $user->getAll();
+        $count = count($db->query(Query::get('get_users'))->result());
+
+        $maxPage = ceil($count / $limit);
+
+        if ($page < 1){
+            Router::redirect('stats/users/1');
+        } else if ($page > $maxPage){
+            Router::redirect('stats/users/'.$maxPage);
+        }
+
+        $offset = $page == 1 ? 0 : ($page - 1) * $limit;
+        $users = $user->getAll(false, true, $offset, $limit);
+
+        $this->view->users = $users;
+        $this->view->currentPage = $page;
+        $this->view->maxPage = $maxPage;
+
         $this->view->render('stats/user_list');
     }
 }

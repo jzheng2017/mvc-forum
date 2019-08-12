@@ -6,10 +6,11 @@
         </div>
     </li>
     <li>
-        <a><i class="material-icons">Person</i>User list</a>
-        <a><i class="material-icons">chevron_right</i>Link 2</a>
-        <a><i class="material-icons">chevron_right</i>Link 3</a>
-        <a><i class="material-icons">chevron_right</i>Link 4</a>
+        <a href="<?=PROOT?>stats/users"><i class="material-icons">person</i>User list</a>
+        <a href="<?=PROOT?>stats/posts"><i class="material-icons">comment</i>Recent posts</a>
+        <a href="<?=PROOT?>search"><i class="material-icons">search</i>Search</a>
+        <a href="<?=PROOT?>games"><i class="material-icons">videogame_asset</i>Games</a>
+        <a href="<?=PROOT?>ranks"><i class="material-icons">trending_up</i>Rankings</a>
     </li>
     <li>
         <div class="divider"></div>

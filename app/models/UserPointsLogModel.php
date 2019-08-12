@@ -5,7 +5,7 @@ class UserPointsLogModel extends Model
 {
     public function __construct($id = '')
     {
-        $table = '';
+        $table = 'user_points_log';
         parent::__construct($table);
         $this->model = 'UserPointsLogModel';
 

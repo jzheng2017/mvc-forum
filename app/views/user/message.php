@@ -6,7 +6,13 @@
             <div class="card-content">
                 <span class="card-title"><?= $this->message->title ?></span>
                 <div class="divider"></div>
-                from: <?= $this->message->senderModel->exists() ? '<a href="' . PROOT . 'user/profile/' . $this->message->senderModel->id . '" class="bold">' . $this->message->senderModel->username . '</a>' : "<b>unknown</b>" ?>
+                <?php if ($this->message->sender != UserModel::currentLoggedInUser()->id) { ?>
+                    <div>
+                        from: <?= $this->message->senderModel->exists() ? '<a href="' . PROOT . 'user/profile/' . $this->message->senderModel->id . '" class="bold">' . $this->message->senderModel->username . '</a>' : "<b>unknown</b>" ?></div>
+                <?php } else { ?>
+                    <div>
+                        to: <?= $this->message->recipientModel->exists() ? '<a href="' . PROOT . 'user/profile/' . $this->message->recipientModel->id . '" class="bold">' . $this->message->recipientModel->username . '</a>' : "<b>unknown</b>" ?></div>
+                <?php } ?>
                 <div class="divider"></div>
                 <p><?= $this->message->body ?></p>
             </div>
@@ -14,7 +20,7 @@
         <?php if ($this->message->sender != UserModel::currentLoggedInUser()->id) { ?>
             <form method="post" class="card col s12">
                 <h5>Reply to message</h5>
-                <?=$this->errors?>
+                <?= $this->errors ?>
                 <div class="input-field">
                     <textarea class="materialize-textarea" id="body" name="body" required></textarea>
                     <label for="body">Message</label>

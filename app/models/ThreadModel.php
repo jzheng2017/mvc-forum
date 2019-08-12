@@ -5,6 +5,7 @@ class ThreadModel extends Model
 {
     public $posts;
     public $user;
+    public $important = false;
 
     public function __construct($thread = '')
     {
@@ -27,15 +28,19 @@ class ThreadModel extends Model
         }
     }
 
-    public function getAll($category)
+    public function getAll($category, $pagination = false, $offset = 0, $limit = 10)
     {
-        $threads = $this->db->find($this->table, ["conditions" => ["category_id = ?", "deleted = 0"], "bind" => [$category], "order" => ['date_created', 'ASC']]);
+        if ($pagination) {
+            $threads = new self();
+            $threads = $threads->find(["conditions" => ["category_id = ?", "deleted = 0"], "bind" => [$category], "limit" => (string)($offset . "," . ($limit)), "order" => ["last_updated DESC, date_created DESC"]]);
+        } else {
+            $threads = $this->db->query(Query::get('get_threads'), [$category])->result();
+        }
 
         $list = [];
         if ($threads) {
             foreach ($threads as $thread) {
-                $thread = (array)$thread;
-                $model = new ThreadModel();
+                $model = new self();
                 $model->populate($thread);
                 $model->posts = $model->getPosts();
                 $model->user = $model->getUser();
@@ -51,9 +56,8 @@ class ThreadModel extends Model
         $list = [];
         if ($posts) {
             foreach ($posts as $post) {
-                $item = (array)$post;
                 $model = new PostModel();
-                $model->populate($item);
+                $model->populate($post);
                 $model->getUser();
                 $list[] = $model;
             }
@@ -70,7 +74,8 @@ class ThreadModel extends Model
         return $this->user;
     }
 
-    public function generateUrl(){
+    public function generateUrl()
+    {
         return 'thread/view/' . $this->db->lastId();
     }
 }

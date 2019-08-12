@@ -173,6 +173,7 @@
                 $index++;
             } ?>
         <?php } ?>
+
         <?php if (UserModel::currentLoggedInUser()) { ?>
             <?php if (UserModel::currentLoggedInUser()->permission >= 0 && !$this->thread->closed) { ?>
                 <div class="row">

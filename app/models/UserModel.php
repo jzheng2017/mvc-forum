@@ -121,9 +121,14 @@ class UserModel extends Model
         }
     }
 
-    public function getAll($additional = false)
+    public function getAll($additional = false, $pagination = false, $offset = 0, $limit = 10)
     {
-        $users = $this->db->query(Query::get('get_users'))->result();
+        if ($pagination) {
+            $users = new UserModel();
+            $users = $users->find(["limit" => (string)($offset . "," . ($limit)), "order" => ["username ASC"]]);
+        } else {
+            $users = $this->db->query(Query::get('get_users'))->result();
+        }
         $models = [];
         foreach ($users as $user) {
             $model = new self();

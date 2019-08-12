@@ -148,7 +148,7 @@ class Database
 
         //order
         if (array_key_exists('order', $params)) {
-            $order = 'ORDER BY ' . $params['order'][0] . ' ' . $params['order'][1];
+            $order = 'ORDER BY ' . $params['order'][0];
         }
 
         //limit

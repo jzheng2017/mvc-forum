@@ -25,7 +25,7 @@ class CategoryModel extends Model
 
     public function getAll()
     {
-        $categories = $this->find(["conditions" => ["parent_id IS NULL"],"order" => ['show_order', 'DESC']]);
+        $categories = $this->find(["conditions" => ["parent_id IS NULL"],"order" => ['show_order DESC']]);
 
         $list = [];
         foreach ($categories as $category) {

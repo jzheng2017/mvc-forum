@@ -22,7 +22,7 @@
                 <tbody>
                 <?php foreach ($this->users as $user) { ?>
                     <tr>
-                        <td><?= $user->username ?></td>
+                        <td><a href="<?=PROOT?>user/profile/<?=$user->id?>"><?= $user->username ?></a></td>
                         <td><?= isset($user->getPoints()->points) ? $user->points->points : "Unknown" ?></td>
                     </tr>
                 <?php } ?>

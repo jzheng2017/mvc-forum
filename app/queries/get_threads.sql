@@ -1,0 +1,1 @@
+SELECT * FROM threads WHERE category_id = ? AND deleted = 0 ORDER BY last_updated DESC, date_created DESC

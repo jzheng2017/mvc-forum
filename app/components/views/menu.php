@@ -1,4 +1,4 @@
-<nav class="indigo darken-2">
+<nav class="indigo darken-2 hide-on-med-and-down">
     <div class="container">
         <div class="nav-wrapper">
             <ul>

@@ -95,6 +95,8 @@ class UserController extends Controller
                     if (password_verify(Input::get('password'), $user->password)) {
                         $remember = (isset($_POST['remember']) && Input::get('remember')) ? true : false;
                         $user->login($remember);
+                        $points = new UserPointsModel((int)$user->id);
+                        $points->assignPoints(1, "Daily login");
                         Router::redirect('');
                     } else {
                         $validation->addError("Username or password is incorrect.");
@@ -230,16 +232,16 @@ class UserController extends Controller
         $db = Database::getInstance();
 
         if ($type == 'received') {
-            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?", "favorite = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0, 0], "order" => ["date_created", "DESC"]]);
+            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?", "favorite = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0, 0], "order" => ["date_created DESC"]]);
             $this->view->messages = $result;
         } else if ($type == 'sent') {
-            $result = $db->find("user_messages", ["conditions" => ["sender = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0], "order" => ["date_created", "DESC"]]);
+            $result = $db->find("user_messages", ["conditions" => ["sender = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0], "order" => ["date_created DESC"]]);
             $this->view->messages = $result;
         } else if ($type == 'trashcan') {
-            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 1], "order" => ["date_created", "DESC"]]);
+            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 1], "order" => ["date_created DESC"]]);
             $this->view->messages = $result;
         } else if ($type == 'favorite') {
-            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?", "favorite = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0, 1], "order" => ["date_created", "DESC"]]);
+            $result = $db->find("user_messages", ["conditions" => ["recipient = ?", "deleted = ?", "favorite = ?"], "bind" => [UserModel::currentLoggedInUser()->id, 0, 1], "order" => ["date_created DESC"]]);
             $this->view->messages = $result;
         }
         $this->view->page = $type;
